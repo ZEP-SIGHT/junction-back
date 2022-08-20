@@ -5,7 +5,6 @@ import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;
 import com.junction.tonight.spark.dto.BaseDataFormat;
 import com.junction.tonight.spark.dto.NumberVisitor;
-import com.junction.tonight.spark.dto.RemainTime;
 import com.junction.tonight.spark.repository.MapRepository;
 import com.junction.tonight.spark.repository.StayTimeRepository;
 import com.junction.tonight.spark.repository.VisitedRepository;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Service
@@ -23,7 +20,7 @@ import java.util.stream.Stream;
 public class AreaServiceImpl implements AreaService {
 
     // REPO 의존 주입
-    private final VisitedRepository repository;
+    private final VisitedRepository visitedRepository;
     private final MapRepository mapRepository;
 
     private final StayTimeRepository stayTimeRepository;
@@ -36,7 +33,7 @@ public class AreaServiceImpl implements AreaService {
         HashMap<String, Integer> finalMap = new HashMap<>();
 
         Map mapByMapHash = mapRepository.findMapByMapHash(mapHash);
-        List<Visited> visitedByMap = repository.findVisitedByMap(mapByMapHash);
+        List<Visited> visitedByMap = visitedRepository.findVisitedByMap(mapByMapHash);
         Set<String> areaNameSet = new HashSet<>();
         visitedByMap.forEach(visited ->
                 areaNameSet.add(visited.getDesignatedAreaName()));

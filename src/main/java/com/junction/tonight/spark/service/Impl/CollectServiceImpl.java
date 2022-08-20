@@ -1,4 +1,4 @@
-package com.junction.tonight.spark.service.Impl;
+package com.junction.tonight.spark.service.impl;
 
 import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;

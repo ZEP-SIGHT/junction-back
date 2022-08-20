@@ -20,7 +20,7 @@ import static com.junction.tonight.spark.controller.RestControllerBase.API_PREFI
 @RequiredArgsConstructor
 public class AreaController {
 
-    static final String URL_PREFIX = API_PREFIX + "/collect";
+    static final String URL_PREFIX = API_PREFIX + "/page3";
 
     private final AreaService service;
 

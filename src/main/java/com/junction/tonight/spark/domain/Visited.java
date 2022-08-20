@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 
 @Data
-@Entity(name = "visited")
+@Entity(name = "visitedTBL")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
