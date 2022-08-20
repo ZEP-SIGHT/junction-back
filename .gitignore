@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 *.properties
+=======
+.idea
+application-prod.properties
+application.properties
+
+.gradle
+out/
+>>>>>>> f83f50c3cee031463c2fe85d254ee6a89b0e05aa
