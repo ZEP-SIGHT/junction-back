@@ -5,11 +5,11 @@ import com.junction.tonight.spark.domain.Visited;
 import com.junction.tonight.spark.repository.StayTimeRepository;
 import com.junction.tonight.spark.repository.VisitedRepository;
 import com.junction.tonight.spark.service.CollectService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CollectServiceImpl implements CollectService{
 
     private final VisitedRepository visitedRepository;
