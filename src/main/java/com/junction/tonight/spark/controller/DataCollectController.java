@@ -2,6 +2,7 @@ package com.junction.tonight.spark.controller;
 
 import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;
+import com.junction.tonight.spark.dto.MapHashResponse;
 import com.junction.tonight.spark.dto.MapInfo;
 import com.junction.tonight.spark.service.CollectService;
 import com.junction.tonight.spark.service.MapService;
@@ -41,9 +42,12 @@ public class DataCollectController extends RestControllerBase{
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> getUrl(MapInfo url) {
+    public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
         String info = mapService.saveUrlInfo(url);
-        return ResponseEntity.ok().body(info);
+        MapHashResponse response = MapHashResponse.builder()
+                .mapHash(info)
+                .build();
+        return ResponseEntity.ok().body(response);
         // 여기서 parsing 한 값을 던져줘야 browser 에서 계속 갖고 있는다 아마도.
     }
 
