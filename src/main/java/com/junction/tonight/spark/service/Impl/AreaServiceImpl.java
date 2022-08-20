@@ -1,6 +1,5 @@
 package com.junction.tonight.spark.service.impl;
 
-import com.junction.tonight.spark.domain.Map;
 import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;
 import com.junction.tonight.spark.dto.BaseDataFormat;
@@ -84,8 +83,13 @@ public class AreaServiceImpl implements AreaService {
         }
 
         for (String remainKey : remainMap.keySet()) {
-            int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
-            bounceRateMap.put(remainKey, i);
+            if (remainMap.get(remainKey) != 0) {
+                int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
+                bounceRateMap.put(remainKey, i);
+
+            }
+//            int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
+//            bounceRateMap.put(remainKey, i);
         }
 
         BaseDataFormat remainTimeFormat = BaseDataFormat.builder().totalNumber(totalNum).areaData(remainMap).build();

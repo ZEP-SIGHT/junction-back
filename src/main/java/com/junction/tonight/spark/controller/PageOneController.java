@@ -7,15 +7,12 @@ import com.junction.tonight.spark.service.Page1Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(PageOneController.URL_PREFIX)
 @RequiredArgsConstructor
-//@CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
+@CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class PageOneController extends RestControllerBase{
     static final String URL_PREFIX = API_PREFIX + "/page1";
 
