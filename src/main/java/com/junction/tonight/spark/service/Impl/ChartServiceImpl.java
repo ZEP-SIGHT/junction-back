@@ -37,19 +37,25 @@ public class ChartServiceImpl implements ChartService {
 
         for (StayTime timeByMapHash : stayTimeByMapHash) {
 
-            Map<Integer, Integer> stringIntegerMap = areaMap.get(timeByMapHash.getDesignatedAreaName());
+            Map<Integer, Integer> chartsByAreaMap = areaMap.get(timeByMapHash.getDesignatedAreaName());
+            Map<Integer, Integer> totalVisitMap = new HashMap<>();
+
             LocalDateTime inTime = timeByMapHash.getInTime();
             int hour = inTime.getHour();
-//            System.out.println(inTime);
-//            System.out.println(hour); // 짝수면 그대로 저장, 홀수면 자기보다 하나 적게 저장.
+            if (totalVisitMap.keySet().contains(hour)) {
+                totalVisitMap.put(hour, chartsByAreaMap.get(hour) + 1);
+            } else {
+                chartsByAreaMap.put(hour, 1);
+            }
+
 
             if (hour % 2 != 0) {
                 hour -= 1;
             }
-            if (stringIntegerMap.keySet().contains(hour)) {
-                stringIntegerMap.put(hour, stringIntegerMap.get(hour) + 1);
+            if (chartsByAreaMap.keySet().contains(hour)) {
+                chartsByAreaMap.put(hour, chartsByAreaMap.get(hour) + 1);
             } else {
-                stringIntegerMap.put(hour, 1);
+                chartsByAreaMap.put(hour, 1);
             }
         }
 
@@ -73,6 +79,13 @@ public class ChartServiceImpl implements ChartService {
         }
 
         return chartAreaList;
+    }
 
+
+    @Override
+    public List<TimeCount> getTotalVisits(String mapHash) {
+//        List<StayTime> stayTimeByMapHash = stayTimeRepository.findStayTimeByMapHash(mapHash);
+
+        return null;
     }
 }

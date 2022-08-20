@@ -41,6 +41,9 @@ public class DataCollectController extends RestControllerBase{
         return ResponseEntity.ok().body(v);
     }
 
+//    @GetMapping("/visit")
+//    public void
+
     @PostMapping("/")
     public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
         String info = mapService.saveUrlInfo(url);
