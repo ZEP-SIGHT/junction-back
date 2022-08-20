@@ -2,7 +2,7 @@ package com.junction.tonight.spark.controller;
 
 import com.junction.tonight.spark.domain.Visited;
 import com.junction.tonight.spark.dto.MapInfo;
-import com.junction.tonight.spark.service.MapService;
+import com.junction.tonight.spark.service.impl.MapServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class DataCollectController extends RestControllerBase{
 
-    private final MapService mapService;
+    private final MapServiceImpl mapService;
 
     static final String URL_PREFIX = API_PREFIX + "/collect";
 

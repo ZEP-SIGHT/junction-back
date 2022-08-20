@@ -19,8 +19,6 @@ public class Map {
 
     @Id
     @Column
-    @GeneratedValue
     private String mapHash;
-
     private String mapName;
 }
