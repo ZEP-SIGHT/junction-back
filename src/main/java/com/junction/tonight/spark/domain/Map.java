@@ -22,6 +22,5 @@ public class Map {
     @GeneratedValue
     private String mapHash;
 
-    @Id
     private String mapName;
 }
