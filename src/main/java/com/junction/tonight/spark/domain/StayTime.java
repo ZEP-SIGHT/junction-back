@@ -21,7 +21,13 @@ public class StayTime {
     @Id
     @Column
     @GeneratedValue
-    private String stId;
+    private Long stId;
+
+    @Column
+    private String mapHash;
+
+    @Column
+    private String designatedAreaName;
 
     @Column
     private String vPlayerId;
@@ -36,7 +42,8 @@ public class StayTime {
     private LocalDateTime outTime;
 
     @Column
-    private LocalDateTime stayTime;
+    //@Comment("시간 : 분 : 초 형태 ex) 00:15:23")
+    private String stayTime;
 
 
 }

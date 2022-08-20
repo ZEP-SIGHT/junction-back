@@ -21,7 +21,7 @@ public class Visited {
     @Id
     @Column
     @GeneratedValue
-    private String vId;
+    private Long vId;
 
     @Column
     private String mapHash;
