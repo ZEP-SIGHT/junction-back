@@ -26,4 +26,21 @@ public interface StayTimeRepository extends JpaRepository<StayTime, String> {
                             + "ORDER BY designated_area_name, v_player_auth"
     )
     List<TestInterface> findTestInterfaceByNativeQuery();
+
+    @Query(nativeQuery = true,
+            value =
+                    "SELECT COUNT(*)" +
+                            " FROM stay_timetbl\n" +
+                            " WHERE designated_area_name = ?1 AND v_player_auth = ?2 AND map_hash = ?3"
+    )
+    Integer getAuthCountForGroup(String areaName, String vPAuth, String mapHash);
+
+    @Query(nativeQuery = true,
+            value =
+                    "SELECT SUM(stay_time)" +
+                            " FROM stay_timetbl" +
+                            " WHERE designated_area_name = ?1 AND v_player_auth = ?2 AND map_hash = ?3"
+    )
+    Integer getStayTimeSumForGroup(String areaName, String vPAuth, String mapHash);
+
 }

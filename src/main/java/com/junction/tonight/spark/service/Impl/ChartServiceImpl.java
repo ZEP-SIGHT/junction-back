@@ -90,13 +90,15 @@ public class ChartServiceImpl implements ChartService {
         }
 
         List<TimeCount> timeCountList = new ArrayList<>();
-
+        int totalCount = 0;
         for (Integer integer : totalVisitMap.keySet()) {
             TimeCount build = TimeCount.builder()
                     .time(integer)
                     .count(totalVisitMap.get(integer))
                     .build();
             timeCountList.add(build);
+            System.out.println(totalVisitMap.get(integer));
+            totalCount += totalVisitMap.get(integer);
         }
 
 //        LocalDateTime inTime = timeByMapHash.getInTime();
@@ -106,6 +108,8 @@ public class ChartServiceImpl implements ChartService {
 //        } else {
 //            chartsByAreaMap.put(hour, 1);
 //        }
+
+
         return timeCountList;
     }
 }

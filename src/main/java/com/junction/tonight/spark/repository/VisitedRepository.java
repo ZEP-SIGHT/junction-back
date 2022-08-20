@@ -18,8 +18,6 @@ public interface VisitedRepository extends JpaRepository<Visited, String> {
 
 
 
-
-
 //    SELECT
 //    map_hash, designated_area_name, v_player_auth, COUNT(*) as cnt
 //    FROM stay_timetbl

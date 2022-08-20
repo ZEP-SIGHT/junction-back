@@ -1,13 +1,18 @@
 package com.junction.tonight.spark.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.junction.tonight.spark.dto.PageOneDto;
+import com.junction.tonight.spark.dto.TimeCount;
 import com.junction.tonight.spark.dto.page1.StatisForAuth;
-import com.junction.tonight.spark.service.Impl.Page1ServiceImpl;
+import com.junction.tonight.spark.service.impl.Page1ServiceImpl;
 import com.junction.tonight.spark.service.Page1Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping(PageOneController.URL_PREFIX)
@@ -19,16 +24,17 @@ public class PageOneController extends RestControllerBase{
     private final Page1Service page1Service;
 
     @RequestMapping(
+            value = "/{mapHash}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<StatisForAuth> getStatisForAuth() throws JsonProcessingException {
+    public ResponseEntity<List<PageOneDto>> getStatisForAuth(@PathVariable String mapHash) throws JsonProcessingException {
 
 
-        page1Service.getDataForAuth();
-
-        return ResponseEntity.ok().body(null);
+        List<PageOneDto> dataForAuth = page1Service.getDataForAuth(mapHash);
+        //page1Service.test();
+        return ResponseEntity.ok().body(dataForAuth);
     }
 
 }
