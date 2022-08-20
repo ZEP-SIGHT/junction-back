@@ -26,14 +26,14 @@ public class DataCollectController extends RestControllerBase{
     static final String MAP_HASH = "/{mapHash}";
     static final String DESIGNATED_AREA_NAME = "/{areaName}";
     static final String V_PLAYER_ID = "/{vPlayerId}";
-    static final String v_PLAYER_AUTH = "/{vPlayerAuth}";
+    static final String V_PLAYER_AUTH = "/{vPlayerAuth}";
 
     private final MapService mapService;
 
     private final CollectService collectService;
 
 
-    @RequestMapping(
+    /*@RequestMapping(
             value = VISITED,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -44,22 +44,33 @@ public class DataCollectController extends RestControllerBase{
         Visited v = collectService.visitArea(visited);
 
         return ResponseEntity.ok().body(v);
-    }
+    }*/
 
 
-    /*@RequestMapping(
-            value = MAP_HASH + DESIGNATED_AREA_NAME,
+    @RequestMapping(
+            value = MAP_HASH + DESIGNATED_AREA_NAME + V_PLAYER_ID + V_PLAYER_AUTH,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<Visited> createVisited(@RequestBody Visited visited) {
+    public ResponseEntity<Visited> createVisited(
+            @PathVariable String mapHash,
+            @PathVariable String areaName,
+            @PathVariable String vPlayerId,
+            @PathVariable Integer vPlayerAuth
+    ) {
 
-        Visited v = collectService.visitArea(visited);
+        Visited getV = Visited.builder()
+                .mapHash(mapHash)
+                .designatedAreaName(areaName)
+                .vPlayerId(vPlayerId)
+                .vPlayerAuth(vPlayerAuth)
+                .build();
+
+        Visited v = collectService.visitArea(getV);
 
         return ResponseEntity.ok().body(v);
     }
-*/
     @PostMapping("/")
     public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
         String info = mapService.saveUrlInfo(url);
