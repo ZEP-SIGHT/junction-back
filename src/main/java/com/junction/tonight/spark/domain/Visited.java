@@ -17,8 +17,8 @@ public class Visited {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue
+    private Long vId;
 
 //    @Column
 //    private String mapHash;
