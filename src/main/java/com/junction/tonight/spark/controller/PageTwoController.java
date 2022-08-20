@@ -35,4 +35,11 @@ public class PageTwoController {
     }
 
 
+//    @GetMapping("/total-visit/{mapHash}")
+//    public ResponseEntity<List<TimeCount>> getTotalVisits(@PathVariable String mapHash) {
+//        List<TimeCount> chartsArea = chartService.getTotalVisits(mapHash);
+//        return ResponseEntity.ok().body(chartsArea);
+//    }
+
+
 }
