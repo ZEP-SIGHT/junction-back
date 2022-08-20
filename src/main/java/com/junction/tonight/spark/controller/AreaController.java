@@ -30,8 +30,8 @@ public class AreaController {
     }
 
     @GetMapping("/remain-time/{mapHash}")
-    public ResponseEntity<BaseDataFormat> getRemainTime(@PathVariable String mapHash) {
-        BaseDataFormat remainTime = service.getRemainTime(mapHash);
+    public ResponseEntity<HashMap<String, BaseDataFormat>> getRemainTime(@PathVariable String mapHash) {
+        HashMap<String, BaseDataFormat> remainTime = service.getRemainTime(mapHash);
         return ResponseEntity.ok().body(remainTime);
     }
 

@@ -32,11 +32,8 @@ public class AreaServiceImpl implements AreaService {
         HashMap<String, List<String>> areaMap = new HashMap<>();
         HashMap<String, Integer> finalMap = new HashMap<>();
 
-//        Map mapByMapHash = mapRepository.findMapByMapHash(mapHash);
-//        List<Visited> visitedByMap = visitedRepository.findVisitedByMap(mapByMapHash);
         List<Visited> visitedByMap = visitedRepository.findVisitedByMapHash(mapHash);
         Set<String> areaNameSet = new HashSet<>();
-        // areaNameSet 이  비어있을 때는? ()초기에
         visitedByMap.forEach(visited ->
                 areaNameSet.add(visited.getDesignatedAreaName()));
         areaNameSet.forEach(name -> areaMap.put(name, new ArrayList<>()));
@@ -56,58 +53,79 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public BaseDataFormat getRemainTime(String mapHash) {
+    public HashMap<String, BaseDataFormat> getRemainTime(String mapHash) {
 
         List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
+        Set<String> areaNameSet = new HashSet<>();
 
         HashMap<String, Integer> remainMap = new HashMap<>();
-
-        Set<String> areaNameSet = new HashSet<>();
+        HashMap<String, Integer> bounceRateMap = new HashMap<>();
 
         stayTimes.forEach(visited ->
                 areaNameSet.add(visited.getDesignatedAreaName()));
-        areaNameSet.forEach(name -> remainMap.put(name, 0));
+        areaNameSet.forEach(name -> {
+            remainMap.put(name, 0);
+            bounceRateMap.put(name, 0);
+        });
 
         int totalNum = 0;
+        int bounceTotalNum = 0;
         for (StayTime stayTime : stayTimes) {
             int integer = remainMap.get(stayTime.getDesignatedAreaName());
             int stayTimeSeconds = Integer.parseInt(stayTime.getStayTime());
             remainMap.put(stayTime.getDesignatedAreaName(), integer + stayTimeSeconds); // data.getStayTime()
             totalNum += stayTimeSeconds;
-        }
-        return BaseDataFormat.builder().totalNumber(totalNum).areaData(remainMap).build();
-    }
 
 
-    @Override
-    public BaseDataFormat getBounceRate(String mapHash) {
-
-        List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
-
-        HashMap<String, Integer> bounceRateMap = new HashMap<>();
-
-        Set<String> areaNameSet = new HashSet<>();
-
-        stayTimes.forEach(visited ->
-                areaNameSet.add(visited.getDesignatedAreaName()));
-        areaNameSet.forEach(name -> bounceRateMap.put(name, 0));
-
-        int totalNum = 0;
-        for (StayTime stayTime : stayTimes) {
-            Integer integer = bounceRateMap.get(stayTime.getDesignatedAreaName());
             if (Integer.parseInt(stayTime.getStayTime()) <= 5) {
                 bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + 1); // data.getStayTime()
-                totalNum += 1;
+                bounceTotalNum += 1;
             }
-//            float stayTime = Float.parseFloat(stayTime.getStayTime());
-//            bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + stayTimeSeconds); // data.getStayTime()
         }
 
-        return BaseDataFormat.builder()
-                .totalNumber(totalNum)
-                .areaData(bounceRateMap) // type
-                .build();
+        for (String remainKey : remainMap.keySet()) {
+            int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
+            bounceRateMap.put(remainKey, i);
+        }
 
-//        return null;
+        BaseDataFormat remainTimeFormat = BaseDataFormat.builder().totalNumber(totalNum).areaData(remainMap).build();
+        BaseDataFormat bounceRateFormat = BaseDataFormat.builder().totalNumber(bounceTotalNum).areaData(bounceRateMap).build();
+        HashMap<String, BaseDataFormat> dataFormatMap = new HashMap<>();
+        dataFormatMap.put("remain", remainTimeFormat);
+        dataFormatMap.put("bounce", bounceRateFormat);
+        return dataFormatMap;
     }
+
+
+//    @Override
+//    public BaseDataFormat getBounceRate(String mapHash) {
+//
+//        List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
+//
+//        HashMap<String, Integer> bounceRateMap = new HashMap<>();
+//
+//        Set<String> areaNameSet = new HashSet<>();
+//
+//        stayTimes.forEach(visited ->
+//                areaNameSet.add(visited.getDesignatedAreaName()));
+//        areaNameSet.forEach(name -> bounceRateMap.put(name, 0));
+//
+//        int totalNum = 0;
+//        for (StayTime stayTime : stayTimes) {
+//            Integer integer = bounceRateMap.get(stayTime.getDesignatedAreaName());
+//            if (Integer.parseInt(stayTime.getStayTime()) <= 5) {
+//                bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + 1); // data.getStayTime()
+//                totalNum += 1;
+//            }
+////            float stayTime = Float.parseFloat(stayTime.getStayTime());
+////            bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + stayTimeSeconds); // data.getStayTime()
+//        }
+//
+//        return BaseDataFormat.builder()
+//                .totalNumber(totalNum)
+//                .areaData(bounceRateMap) // type
+//                .build();
+//
+////        return null;
+//    }
 }
