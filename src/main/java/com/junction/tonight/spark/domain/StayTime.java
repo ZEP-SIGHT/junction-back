@@ -42,7 +42,7 @@ public class StayTime {
     private LocalDateTime outTime;
 
     @Column
-    //@Comment("시간 : 분 : 초 형태 ex) 00:15:23")
+    //@Comment("seconds 값만")
     private String stayTime;
 
 
