@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ public class StayTime {
 
     @Id
     @Column
+    @GeneratedValue
     private String stId;
 
     @Column

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Data
@@ -18,6 +19,7 @@ public class Map {
 
     @Id
     @Column
+    @GeneratedValue
     private String mapHash;
 
     @Id
