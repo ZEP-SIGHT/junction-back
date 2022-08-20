@@ -30,5 +30,5 @@ public class Visited {
     private String vPlayerId;
 
     @Column
-    private Integer vPlayerAuth;
+    private String vPlayerAuth;
 }
