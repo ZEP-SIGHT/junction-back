@@ -38,17 +38,9 @@ public class ChartServiceImpl implements ChartService {
         for (StayTime timeByMapHash : stayTimeByMapHash) {
 
             Map<Integer, Integer> chartsByAreaMap = areaMap.get(timeByMapHash.getDesignatedAreaName());
-            Map<Integer, Integer> totalVisitMap = new HashMap<>();
 
             LocalDateTime inTime = timeByMapHash.getInTime();
             int hour = inTime.getHour();
-            if (totalVisitMap.keySet().contains(hour)) {
-                totalVisitMap.put(hour, chartsByAreaMap.get(hour) + 1);
-            } else {
-                chartsByAreaMap.put(hour, 1);
-            }
-
-
             if (hour % 2 != 0) {
                 hour -= 1;
             }
@@ -84,8 +76,36 @@ public class ChartServiceImpl implements ChartService {
 
     @Override
     public List<TimeCount> getTotalVisits(String mapHash) {
-//        List<StayTime> stayTimeByMapHash = stayTimeRepository.findStayTimeByMapHash(mapHash);
+        List<StayTime> stayTimeByMapHash = stayTimeRepository.findStayTimeByMapHash(mapHash);
+        Map<Integer, Integer> totalVisitMap = new HashMap<>();
 
-        return null;
+        for (StayTime timeByMapHash : stayTimeByMapHash) {
+            LocalDateTime inTime = timeByMapHash.getInTime();
+            int hour = inTime.getHour();
+            if (totalVisitMap.keySet().contains(hour)) {
+                totalVisitMap.put(hour, totalVisitMap.get(hour) + 1);
+            } else {
+                totalVisitMap.put(hour, 1);
+            }
+        }
+
+        List<TimeCount> timeCountList = new ArrayList<>();
+
+        for (Integer integer : totalVisitMap.keySet()) {
+            TimeCount build = TimeCount.builder()
+                    .time(integer)
+                    .count(totalVisitMap.get(integer))
+                    .build();
+            timeCountList.add(build);
+        }
+
+//        LocalDateTime inTime = timeByMapHash.getInTime();
+//        int hour = inTime.getHour();
+//        if (totalVisitMap.keySet().contains(hour)) {
+//            totalVisitMap.put(hour, chartsByAreaMap.get(hour) + 1);
+//        } else {
+//            chartsByAreaMap.put(hour, 1);
+//        }
+        return timeCountList;
     }
 }
