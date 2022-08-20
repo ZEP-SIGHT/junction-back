@@ -13,7 +13,7 @@ public class MapServiceImpl implements MapService {
 
     private final MapRepository repository;
 
-    public void saveUrlInfo(MapInfo urlCollect) {
+    public String saveUrlInfo(MapInfo urlCollect) {
 
         String mapName = urlCollect.getMapName();
 
@@ -23,6 +23,9 @@ public class MapServiceImpl implements MapService {
 
         Map map = new Map(mapHash, mapName);
         repository.save(map);
+
+//        EnterResponse.builder()..build();
+        return mapHash;
     }
 
 }

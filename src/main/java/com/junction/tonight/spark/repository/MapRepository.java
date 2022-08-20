@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MapRepository extends JpaRepository<Map, Long> {
+    Map findMapByMapHash(String hash);
 }

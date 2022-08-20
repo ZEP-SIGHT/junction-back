@@ -3,6 +3,6 @@ package com.junction.tonight.spark.service;
 import com.junction.tonight.spark.dto.MapInfo;
 
 public interface MapService {
-    void saveUrlInfo(MapInfo urlCollect);
+    String saveUrlInfo(MapInfo urlCollect);
 
 }

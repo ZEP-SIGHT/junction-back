@@ -1,13 +1,21 @@
 package com.junction.tonight.spark.service.impl;
 
 import com.junction.tonight.spark.domain.Map;
+import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;
+import com.junction.tonight.spark.dto.BaseDataFormat;
+import com.junction.tonight.spark.dto.NumberVisitor;
+import com.junction.tonight.spark.dto.RemainTime;
+import com.junction.tonight.spark.repository.MapRepository;
+import com.junction.tonight.spark.repository.StayTimeRepository;
 import com.junction.tonight.spark.repository.VisitedRepository;
 import com.junction.tonight.spark.service.AreaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -16,21 +24,58 @@ public class AreaServiceImpl implements AreaService {
 
     // REPO 의존 주입
     private final VisitedRepository repository;
+    private final MapRepository mapRepository;
+
+    private final StayTimeRepository stayTimeRepository;
 
 
     @Override
-    public Object getNumberOfVisitor() {
+    public NumberVisitor getNumberOfVisitor(String mapHash) {
 
-        Map mapHash = new Map(); // 어디선가 받아와야 한다.
-        List<Visited> visitedByMap = repository.findVisitedByMap(mapHash);
-        // 영역별 visitors
-//        visitedByMap.stream()
-//                .map(visited -> visited.getDesignatedAreaName())// 이름 별로 map 에 저장
+        HashMap<String, List<String>> areaMap = new HashMap<>();
+        HashMap<String, Integer> finalMap = new HashMap<>();
 
-        // sql 로 areaName -> 방문 playeId 를 다 섬 or distinct 하게 sum
+        Map mapByMapHash = mapRepository.findMapByMapHash(mapHash);
+        List<Visited> visitedByMap = repository.findVisitedByMap(mapByMapHash);
+        Set<String> areaNameSet = new HashSet<>();
+        visitedByMap.forEach(visited ->
+                areaNameSet.add(visited.getDesignatedAreaName()));
+        areaNameSet.forEach(name -> areaMap.put(name, new ArrayList<>()));
+        visitedByMap
+                .forEach(visited -> {
+                    List<String> arrays = areaMap.get(visited.getDesignatedAreaName());
+                    arrays.add(visited.getVPlayerId());
+                });
 
-        // map hash key 조회
+        int totalCount = 0;
+        for (String s : areaMap.keySet()) {
+            finalMap.put(s, areaMap.get(s).size());
+            totalCount += areaMap.get(s).size();
+        }
 
-        return null;
+        return NumberVisitor.builder().totalNumber(totalCount).areaData(finalMap).build();
+    }
+
+    @Override
+    public BaseDataFormat getRemainTime(String mapHash) {
+
+        List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
+
+        HashMap<String, Integer> remainMap = new HashMap<>();
+
+        Set<String> areaNameSet = new HashSet<>();
+
+        stayTimes.forEach(visited ->
+                areaNameSet.add(visited.getDesignatedAreaName()));
+        areaNameSet.forEach(name -> remainMap.put(name, 0));
+
+        int totalNum = 0;
+        for (StayTime stayTime : stayTimes) {
+            int integer = remainMap.get(stayTime.getDesignatedAreaName());
+            totalNum += integer; // 여기서 시간 (초) 덧셈 로직 필요 TODO : Integer.valueOf() 임시 처리
+            remainMap.put(stayTime.getDesignatedAreaName(), integer + 1); // data.getStayTime()
+        }
+        System.out.println(remainMap);
+        return BaseDataFormat.builder().totalNumber(totalNum).areaData(remainMap).build();
     }
 }

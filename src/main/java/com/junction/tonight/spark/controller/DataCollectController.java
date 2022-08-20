@@ -36,7 +36,11 @@ public class DataCollectController extends RestControllerBase{
     }
 
     @PostMapping("/")
-    public void getUrl(MapInfo url){
-        mapService.saveUrlInfo(url);
+    public ResponseEntity<String> getUrl(MapInfo url){
+        String info = mapService.saveUrlInfo(url);
+        return ResponseEntity.ok().body(info);
+        // 여기서 parsing 한 값을 던져줘야 browser 에서 계속 갖고 있는다 아마도.
+
+
     }
 }
