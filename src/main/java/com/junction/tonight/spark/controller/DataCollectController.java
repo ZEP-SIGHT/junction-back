@@ -17,11 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(DataCollectController.URL_PREFIX)
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
+//@CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class DataCollectController extends RestControllerBase{
     static final String URL_PREFIX = API_PREFIX + "/collect";
     static final String VISITED = "/visit";
     static final String LEAVE = "/leave";
+
+    static final String MAP_HASH = "/{mapHash}";
+    static final String DESIGNATED_AREA_NAME = "/{areaName}";
+    static final String V_PLAYER_ID = "/{vPlayerId}";
+    static final String v_PLAYER_AUTH = "/{vPlayerAuth}";
 
     private final MapService mapService;
 
@@ -41,9 +46,19 @@ public class DataCollectController extends RestControllerBase{
         return ResponseEntity.ok().body(v);
     }
 
-//    @GetMapping("/visit")
-//    public void
+    /*@RequestMapping(
+            value = MAP_HASH + DESIGNATED_AREA_NAME,
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<Visited> createVisited(@RequestBody Visited visited) {
 
+        Visited v = collectService.visitArea(visited);
+
+        return ResponseEntity.ok().body(v);
+    }
+*/
     @PostMapping("/")
     public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
         String info = mapService.saveUrlInfo(url);
