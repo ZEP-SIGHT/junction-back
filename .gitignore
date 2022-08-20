@@ -1,6 +1,4 @@
+*.properties
 .idea
-application-prod.properties
-application.properties
-
 .gradle
 out/
