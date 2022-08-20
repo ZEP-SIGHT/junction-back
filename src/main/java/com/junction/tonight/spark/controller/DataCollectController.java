@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  *  visit 및 stayTime api
  */
@@ -28,12 +31,15 @@ public class DataCollectController extends RestControllerBase{
     static final String V_PLAYER_ID = "/{vPlayerId}";
     static final String V_PLAYER_AUTH = "/{vPlayerAuth}";
 
+    static final String IN_TIME = "/{inTime}";
+    static final String OUT_TIME = "/{outTime}";
+
     private final MapService mapService;
 
     private final CollectService collectService;
 
-
-    /*@RequestMapping(
+    //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    @RequestMapping(
             value = VISITED,
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -44,41 +50,6 @@ public class DataCollectController extends RestControllerBase{
         Visited v = collectService.visitArea(visited);
 
         return ResponseEntity.ok().body(v);
-    }*/
-
-
-    @RequestMapping(
-            value = MAP_HASH + DESIGNATED_AREA_NAME + V_PLAYER_ID + V_PLAYER_AUTH,
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @ResponseBody
-    public ResponseEntity<Visited> createVisited(
-            @PathVariable String mapHash,
-            @PathVariable String areaName,
-            @PathVariable String vPlayerId,
-            @PathVariable Integer vPlayerAuth
-    ) {
-
-        Visited getV = Visited.builder()
-                .mapHash(mapHash)
-                .designatedAreaName(areaName)
-                .vPlayerId(vPlayerId)
-                .vPlayerAuth(vPlayerAuth)
-                .build();
-
-        Visited v = collectService.visitArea(getV);
-
-        return ResponseEntity.ok().body(v);
-    }
-    @PostMapping("/")
-    public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
-        String info = mapService.saveUrlInfo(url);
-        MapHashResponse response = MapHashResponse.builder()
-                .mapHash(info)
-                .build();
-        return ResponseEntity.ok().body(response);
-        // 여기서 parsing 한 값을 던져줘야 browser 에서 계속 갖고 있는다 아마도.
     }
 
     @RequestMapping(
@@ -93,4 +64,72 @@ public class DataCollectController extends RestControllerBase{
 
         return ResponseEntity.ok().body(s);
     }
+
+
+    /*@RequestMapping(
+            value = MAP_HASH + DESIGNATED_AREA_NAME + V_PLAYER_ID + V_PLAYER_AUTH,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<Visited> createVisited(
+            @PathVariable String mapHash,
+            @PathVariable String areaName,
+            @PathVariable String vPlayerId,
+            @PathVariable String vPlayerAuth
+    ) {
+
+        Visited getV = Visited.builder()
+                .mapHash(mapHash)
+                .designatedAreaName(areaName)
+                .vPlayerId(vPlayerId)
+                .vPlayerAuth(vPlayerAuth)
+                .build();
+
+        Visited v = collectService.visitArea(getV);
+
+        return ResponseEntity.ok().body(v);
+    }
+
+    @RequestMapping(
+            value = MAP_HASH + DESIGNATED_AREA_NAME + V_PLAYER_ID + V_PLAYER_AUTH + IN_TIME + OUT_TIME,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public ResponseEntity<StayTime> createStayTime(
+            @PathVariable String mapHash,
+            @PathVariable String areaName,
+            @PathVariable String vPlayerId,
+            @PathVariable String vPlayerAuth,
+            @PathVariable String inTime,
+            @PathVariable String outTime
+    ) {
+
+        StayTime getSt = StayTime.builder()
+                .mapHash(mapHash)
+                .designatedAreaName(areaName)
+                .vPlayerId(vPlayerId)
+                .vPlayerAuth(vPlayerAuth)
+                .inTime(LocalDateTime.parse(inTime, formatter))
+                .outTime(LocalDateTime.parse(outTime, formatter))
+                .build();
+
+        StayTime s = collectService.leaveArea(getSt);
+
+        return ResponseEntity.ok().body(s);
+    }*/
+
+
+    @PostMapping("/")
+    public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
+        String info = mapService.saveUrlInfo(url);
+        MapHashResponse response = MapHashResponse.builder()
+                .mapHash(info)
+                .build();
+        return ResponseEntity.ok().body(response);
+        // 여기서 parsing 한 값을 던져줘야 browser 에서 계속 갖고 있는다 아마도.
+    }
+
+
 }
