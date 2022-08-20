@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(DataCollectController.URL_PREFIX)
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class DataCollectController extends RestControllerBase{
     static final String URL_PREFIX = API_PREFIX + "/collect";
     static final String VISITED = "/visit";
