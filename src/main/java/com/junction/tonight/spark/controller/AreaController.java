@@ -13,7 +13,7 @@ import java.util.HashMap;
 import static com.junction.tonight.spark.controller.RestControllerBase.API_PREFIX;
 
 @RestController
-@RequestMapping(DataCollectController.URL_PREFIX)
+@RequestMapping(AreaController.URL_PREFIX)
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class AreaController {
@@ -35,9 +35,9 @@ public class AreaController {
         return ResponseEntity.ok().body(remainTime);
     }
 
-//    @GetMapping("/bounce-rate/{mapHash}")
-//    public ResponseEntity<BaseDataFormat> getRemainTime(@PathVariable String mapHash) {
-//        BaseDataFormat remainTime = service.getRemainTime(mapHash);
-//        return ResponseEntity.ok().body(remainTime);
-//    }
+    @GetMapping("/bounce-rate/{mapHash}")
+    public ResponseEntity<BaseDataFormat> getBounceRate(@PathVariable String mapHash) {
+        BaseDataFormat bounceRate = service.getBounceRate(mapHash);
+        return ResponseEntity.ok().body(bounceRate);
+    }
 }

@@ -20,12 +20,8 @@ public class Visited {
     @GeneratedValue
     private Long vId;
 
-//    @Column
-//    private String mapHash;
-
-    @ManyToOne
-    @JoinColumn(name = "map_hash")
-    private Map map;
+    @Column
+    private String mapHash;
 
     @Column
     private String designatedAreaName;

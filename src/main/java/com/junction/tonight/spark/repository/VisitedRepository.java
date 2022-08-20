@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface VisitedRepository extends JpaRepository<Visited, String> {
     //    List<StayTime> findStayTimeByMap(Map map);
-    List<Visited> findVisitedByMap(Map map);
+//    List<Visited> findVisitedByMap(Map map);
+    List<Visited> findVisitedByMapHash(String map);
 
 }
