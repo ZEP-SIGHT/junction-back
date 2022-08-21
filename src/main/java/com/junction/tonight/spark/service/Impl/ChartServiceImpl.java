@@ -89,6 +89,18 @@ public class ChartServiceImpl implements ChartService {
             }
         }
 
+        List<TimeCount> sortedArrayList = new ArrayList<>();
+        LinkedHashMap<String, TimeCount> hashMap = new LinkedHashMap<>();
+        for (int i = 12; i <= 24; i++) {
+            String hour = Integer.toString(i);
+            String concat = hour.concat(":00");
+            hashMap.put(concat, null);
+        }
+//        for (int i = )
+
+//        for
+//        int sortedArray[2];
+
         List<TimeCount> timeCountList = new ArrayList<>();
         int totalCount = 0;
         for (Integer integer : totalVisitMap.keySet()) {
@@ -96,20 +108,14 @@ public class ChartServiceImpl implements ChartService {
                     .time(integer)
                     .count(totalVisitMap.get(integer))
                     .build();
+            String hour = Integer.toString(integer);
+            String concat = hour.concat(":00");
+            hashMap.put(concat, build);
             timeCountList.add(build);
-            System.out.println(totalVisitMap.get(integer));
+//            System.out.println(totalVisitMap.get(integer));
             totalCount += totalVisitMap.get(integer);
         }
-
-//        LocalDateTime inTime = timeByMapHash.getInTime();
-//        int hour = inTime.getHour();
-//        if (totalVisitMap.keySet().contains(hour)) {
-//            totalVisitMap.put(hour, chartsByAreaMap.get(hour) + 1);
-//        } else {
-//            chartsByAreaMap.put(hour, 1);
-//        }
-
-
+        System.out.println(hashMap);
         return timeCountList;
     }
 }

@@ -67,8 +67,8 @@ public class AreaServiceImpl implements AreaService {
             bounceRateMap.put(name, 0);
         });
 
-        int totalNum = 0;
-        int bounceTotalNum = 0;
+        Integer totalNum = 0;
+        Integer bounceTotalNum = 0;
         for (StayTime stayTime : stayTimes) {
             int integer = remainMap.get(stayTime.getDesignatedAreaName());
             int stayTimeSeconds = Integer.parseInt(stayTime.getStayTime());
@@ -92,8 +92,12 @@ public class AreaServiceImpl implements AreaService {
 //            bounceRateMap.put(remainKey, i);
         }
 
-        BaseDataFormat remainTimeFormat = BaseDataFormat.builder().totalNumber(totalNum).areaData(remainMap).build();
-        BaseDataFormat bounceRateFormat = BaseDataFormat.builder().totalNumber(bounceTotalNum).areaData(bounceRateMap).build();
+        BaseDataFormat remainTimeFormat = BaseDataFormat.builder().totalNumber(totalNum.doubleValue()).areaData(remainMap).build();
+        BaseDataFormat bounceRateFormat = BaseDataFormat.builder().totalNumber(0d).areaData(bounceRateMap).build();
+        if (totalNum != 0) {
+            double mod = (double) bounceTotalNum / (double) totalNum;
+            bounceRateFormat = BaseDataFormat.builder().totalNumber(mod).areaData(bounceRateMap).build();
+        }
         HashMap<String, BaseDataFormat> dataFormatMap = new HashMap<>();
         dataFormatMap.put("remain", remainTimeFormat);
         dataFormatMap.put("bounce", bounceRateFormat);

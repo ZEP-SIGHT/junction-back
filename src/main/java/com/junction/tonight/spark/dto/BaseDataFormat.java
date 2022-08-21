@@ -14,7 +14,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class BaseDataFormat {
 
-    public Integer totalNumber;
+    public Double totalNumber;
 
     public HashMap<String, Integer> areaData;
 }
