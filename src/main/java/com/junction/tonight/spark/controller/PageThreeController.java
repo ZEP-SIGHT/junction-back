@@ -34,10 +34,4 @@ public class PageThreeController {
         HashMap<String, BaseDataFormat> remainTime = service.getRemainTime(mapHash);
         return ResponseEntity.ok().body(remainTime);
     }
-
-//    @GetMapping("/bounce-rate/{mapHash}")
-//    public ResponseEntity<BaseDataFormat> getBounceRate(@PathVariable String mapHash) {
-//        BaseDataFormat bounceRate = service.getBounceRate(mapHash);
-//        return ResponseEntity.ok().body(bounceRate);
-//    }
 }

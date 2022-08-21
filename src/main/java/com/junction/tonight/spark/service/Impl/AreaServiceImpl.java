@@ -86,10 +86,7 @@ public class AreaServiceImpl implements AreaService {
             if (remainMap.get(remainKey) != 0) {
                 int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
                 bounceRateMap.put(remainKey, i);
-
             }
-//            int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
-//            bounceRateMap.put(remainKey, i);
         }
 
         BaseDataFormat remainTimeFormat = BaseDataFormat.builder().totalNumber(totalNum.doubleValue()).areaData(remainMap).build();

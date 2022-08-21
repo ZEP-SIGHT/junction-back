@@ -3,6 +3,8 @@ package com.junction.tonight.spark.service.impl;
 import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.dto.ChartArea;
 import com.junction.tonight.spark.dto.TimeCount;
+import com.junction.tonight.spark.dto.TimeCountDto;
+import com.junction.tonight.spark.dto.TotalVisit;
 import com.junction.tonight.spark.repository.StayTimeRepository;
 import com.junction.tonight.spark.service.ChartService;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +77,7 @@ public class ChartServiceImpl implements ChartService {
 
 
     @Override
-    public List<TimeCount> getTotalVisits(String mapHash) {
+    public TotalVisit getTotalVisits(String mapHash) {
         List<StayTime> stayTimeByMapHash = stayTimeRepository.findStayTimeByMapHash(mapHash);
         Map<Integer, Integer> totalVisitMap = new HashMap<>();
 
@@ -89,33 +91,71 @@ public class ChartServiceImpl implements ChartService {
             }
         }
 
-        List<TimeCount> sortedArrayList = new ArrayList<>();
         LinkedHashMap<String, TimeCount> hashMap = new LinkedHashMap<>();
-        for (int i = 12; i <= 24; i++) {
+
+        for (int i = 12; i <= 23; i++) {
             String hour = Integer.toString(i);
             String concat = hour.concat(":00");
-            hashMap.put(concat, null);
+            TimeCount build = TimeCount.builder()
+                    .time(0)
+                    .count(totalVisitMap.get(0))
+                    .build();
+            hashMap.put(concat, build);
+
         }
-//        for (int i = )
+        for (int i = 0; i <= 9; i++) {
+            String hour = "0".concat(Integer.toString(i));
+            String concat = hour.concat(":00");
+            TimeCount build = TimeCount.builder()
+                    .time(0)
+                    .count(totalVisitMap.get(0))
+                    .build();
+            hashMap.put(concat, build);
+        }
 
-//        for
-//        int sortedArray[2];
+        for (int i = 10; i < 12; i++) {
+            String hour = Integer.toString(i);
+            String concat = hour.concat(":00");
+            TimeCount build = TimeCount.builder()
+                    .time(0)
+                    .count(totalVisitMap.get(0))
+                    .build();
+            hashMap.put(concat, build);
+        }
 
-        List<TimeCount> timeCountList = new ArrayList<>();
         int totalCount = 0;
         for (Integer integer : totalVisitMap.keySet()) {
+            int count = 0;
+            if (totalVisitMap.get(integer) != null) {
+                count = totalVisitMap.get(integer);
+            }
             TimeCount build = TimeCount.builder()
                     .time(integer)
-                    .count(totalVisitMap.get(integer))
+                    .count(count)
                     .build();
             String hour = Integer.toString(integer);
+            if (hour.length() < 2) {
+                hour = "0".concat(hour);
+            }
             String concat = hour.concat(":00");
             hashMap.put(concat, build);
-            timeCountList.add(build);
-//            System.out.println(totalVisitMap.get(integer));
             totalCount += totalVisitMap.get(integer);
         }
-        System.out.println(hashMap);
-        return timeCountList;
+
+        ArrayList<TimeCountDto> arrayList = new ArrayList<>();
+        for (String time : hashMap.keySet()) {
+            Integer count = hashMap.get(time).getCount();
+            count = count == null ? 0 : count;
+            TimeCountDto build = TimeCountDto.builder()
+                    .hour(time)
+                    .count(count)
+                    .build();
+            arrayList.add(build);
+        }
+
+        return TotalVisit.builder()
+                .totalVisit(totalCount)
+                .timeCount(arrayList)
+                .build();
     }
 }
