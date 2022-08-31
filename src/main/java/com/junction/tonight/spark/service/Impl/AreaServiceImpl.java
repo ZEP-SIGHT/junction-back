@@ -28,27 +28,27 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public NumberVisitor getNumberOfVisitor(String mapHash) {
 
-        HashMap<String, List<String>> areaMap = new HashMap<>();
-        HashMap<String, Integer> finalMap = new HashMap<>();
-
-        List<Visited> visitedByMap = visitedRepository.findVisitedByMapHash(mapHash);
-        Set<String> areaNameSet = new HashSet<>();
-        visitedByMap.forEach(visited ->
-                areaNameSet.add(visited.getDesignatedAreaName()));
-        areaNameSet.forEach(name -> areaMap.put(name, new ArrayList<>()));
-        visitedByMap
-                .forEach(visited -> {
-                    List<String> arrays = areaMap.get(visited.getDesignatedAreaName());
-                    arrays.add(visited.getVPlayerId());
-                });
-
         int totalCount = 0;
-        for (String s : areaMap.keySet()) {
-            finalMap.put(s, areaMap.get(s).size());
-            totalCount += areaMap.get(s).size();
-        }
 
-        return NumberVisitor.builder().totalNumber(totalCount).areaData(finalMap).build();
+        // 지정한 스페이스를 조회
+        List<Visited> visitedByMap = visitedRepository.findVisitedByMapHash(mapHash);
+        HashMap<String, Integer> areaMap = new HashMap<>();
+
+        visitedByMap.forEach(visited -> {
+            String areaName = visited.getDesignatedAreaName();
+            if (areaMap.containsKey(areaName)) {
+                areaMap.put(areaName, areaMap.get(areaName) + 1);
+            } else {
+                areaMap.put(areaName, 1);
+            }}
+        );
+        for (String areaName : areaMap.keySet()) {
+            totalCount += areaMap.get(areaName);
+        }
+        return NumberVisitor.builder()
+                .totalNumber(totalCount)
+                .areaData(areaMap)
+                .build();
     }
 
     @Override
@@ -61,7 +61,9 @@ public class AreaServiceImpl implements AreaService {
         HashMap<String, Integer> bounceRateMap = new HashMap<>();
 
         stayTimes.forEach(visited ->
-                areaNameSet.add(visited.getDesignatedAreaName()));
+                areaNameSet.add(visited.getDesignatedAreaName())
+        );
+
         areaNameSet.forEach(name -> {
             remainMap.put(name, 0);
             bounceRateMap.put(name, 0);
@@ -100,37 +102,4 @@ public class AreaServiceImpl implements AreaService {
         dataFormatMap.put("bounce", bounceRateFormat);
         return dataFormatMap;
     }
-
-
-//    @Override
-//    public BaseDataFormat getBounceRate(String mapHash) {
-//
-//        List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
-//
-//        HashMap<String, Integer> bounceRateMap = new HashMap<>();
-//
-//        Set<String> areaNameSet = new HashSet<>();
-//
-//        stayTimes.forEach(visited ->
-//                areaNameSet.add(visited.getDesignatedAreaName()));
-//        areaNameSet.forEach(name -> bounceRateMap.put(name, 0));
-//
-//        int totalNum = 0;
-//        for (StayTime stayTime : stayTimes) {
-//            Integer integer = bounceRateMap.get(stayTime.getDesignatedAreaName());
-//            if (Integer.parseInt(stayTime.getStayTime()) <= 5) {
-//                bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + 1); // data.getStayTime()
-//                totalNum += 1;
-//            }
-////            float stayTime = Float.parseFloat(stayTime.getStayTime());
-////            bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + stayTimeSeconds); // data.getStayTime()
-//        }
-//
-//        return BaseDataFormat.builder()
-//                .totalNumber(totalNum)
-//                .areaData(bounceRateMap) // type
-//                .build();
-//
-////        return null;
-//    }
 }
