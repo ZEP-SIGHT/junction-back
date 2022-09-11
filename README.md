@@ -14,13 +14,18 @@
 - MariaDB
 - AWS ubuntu
 
+<br/>
+
 ## Branches
 - main (deploy)
 - dev (develop)
 
+<br/>
+
 ## Demo
 ![ezgif-5-0858cd14a4](https://user-images.githubusercontent.com/31172248/188212745-fa4e4221-fb4a-445e-8467-b72f31a51a9d.gif)
 
+<br/>
 
 ## Articles
 - [link](https://www.newsis.com/view/?id=NISX20220822_0001985841)
