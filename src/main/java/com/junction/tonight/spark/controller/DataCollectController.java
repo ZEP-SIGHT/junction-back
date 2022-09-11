@@ -120,16 +120,9 @@ public class DataCollectController extends RestControllerBase{
         return ResponseEntity.ok().body(s);
     }*/
 
-
     @PostMapping("/")
     public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
-        String info = mapService.saveUrlInfo(url);
-        MapHashResponse response = MapHashResponse.builder()
-                .mapHash(info)
-                .build();
+        MapHashResponse response = mapService.saveUrlInfo(url);
         return ResponseEntity.ok().body(response);
-        // 여기서 parsing 한 값을 던져줘야 browser 에서 계속 갖고 있는다 아마도.
     }
-
-
 }
