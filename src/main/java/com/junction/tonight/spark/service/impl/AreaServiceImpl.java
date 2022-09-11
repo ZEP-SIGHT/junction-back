@@ -34,12 +34,12 @@ public class AreaServiceImpl implements AreaService {
         List<Visited> visitedByMap = visitedRepository.findVisitedByMapHash(mapHash);
         Set<String> areaNameSet = new HashSet<>();
         visitedByMap.forEach(visited ->
-                areaNameSet.add(visited.getDesignatedAreaName()));
+                areaNameSet.add(visited.getAreaName()));
         areaNameSet.forEach(name -> areaMap.put(name, new ArrayList<>()));
         visitedByMap
                 .forEach(visited -> {
-                    List<String> arrays = areaMap.get(visited.getDesignatedAreaName());
-                    arrays.add(visited.getVPlayerId());
+                    List<String> arrays = areaMap.get(visited.getAreaName());
+                    arrays.add(visited.getPlayerId());
                 });
 
         int totalCount = 0;
@@ -61,7 +61,7 @@ public class AreaServiceImpl implements AreaService {
         HashMap<String, Integer> bounceRateMap = new HashMap<>();
 
         stayTimes.forEach(visited ->
-                areaNameSet.add(visited.getDesignatedAreaName()));
+                areaNameSet.add(visited.getAreaName()));
         areaNameSet.forEach(name -> {
             remainMap.put(name, 0);
             bounceRateMap.put(name, 0);
@@ -70,14 +70,14 @@ public class AreaServiceImpl implements AreaService {
         Integer totalNum = 0;
         Integer bounceTotalNum = 0;
         for (StayTime stayTime : stayTimes) {
-            int integer = remainMap.get(stayTime.getDesignatedAreaName());
+            int integer = remainMap.get(stayTime.getAreaName());
             int stayTimeSeconds = Integer.parseInt(stayTime.getStayTime());
-            remainMap.put(stayTime.getDesignatedAreaName(), integer + stayTimeSeconds); // data.getStayTime()
+            remainMap.put(stayTime.getAreaName(), integer + stayTimeSeconds); // data.getStayTime()
             totalNum += stayTimeSeconds;
 
 
             if (Integer.parseInt(stayTime.getStayTime()) <= 5) {
-                bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + 1); // data.getStayTime()
+                bounceRateMap.put(stayTime.getAreaName(), integer + 1); // data.getStayTime()
                 bounceTotalNum += 1;
             }
         }

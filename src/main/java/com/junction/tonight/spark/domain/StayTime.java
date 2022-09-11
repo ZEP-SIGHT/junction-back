@@ -9,28 +9,32 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "stayTimeTBL")
+@Entity
+@Table(name = "time_log", catalog = "zep")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StayTime {
 
     @Id
-    @Column
-    @GeneratedValue
-    private Long stId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String mapHash;
 
-    @Column
-    private String designatedAreaName;
+    @JoinColumn(name = "zep_map")
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private ZepMap zepMap; // 기존 mapHash
 
     @Column
-    private String vPlayerId;
+    private String areaName;
 
     @Column
-    private String vPlayerAuth;
+    private String playerId;
+
+    @Column
+    private String playerAuth;
 
     @Column
     private LocalDateTime inTime;

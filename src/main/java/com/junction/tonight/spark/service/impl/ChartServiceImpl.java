@@ -28,7 +28,7 @@ public class ChartServiceImpl implements ChartService {
         List<StayTime> stayTimeByMapHash = stayTimeRepository.findStayTimeByMapHash(mapHash);
 
         Set<String> areaSet = stayTimeByMapHash.stream()
-                .map(StayTime::getDesignatedAreaName)
+                .map(StayTime::getAreaName)
                 .collect(Collectors.toSet());
 
         HashMap<String, Map<Integer, Integer>> areaMap = new HashMap<>();
@@ -39,7 +39,7 @@ public class ChartServiceImpl implements ChartService {
 
         for (StayTime timeByMapHash : stayTimeByMapHash) {
 
-            Map<Integer, Integer> chartsByAreaMap = areaMap.get(timeByMapHash.getDesignatedAreaName());
+            Map<Integer, Integer> chartsByAreaMap = areaMap.get(timeByMapHash.getAreaName());
 
             LocalDateTime inTime = timeByMapHash.getInTime();
             int hour = inTime.getHour();

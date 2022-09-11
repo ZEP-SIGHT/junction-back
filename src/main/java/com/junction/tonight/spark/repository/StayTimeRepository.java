@@ -1,6 +1,5 @@
 package com.junction.tonight.spark.repository;
 
-import com.junction.tonight.spark.domain.Map;
 import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.dto.page1.TestInterface;
 import org.springframework.data.jpa.repository.JpaRepository;

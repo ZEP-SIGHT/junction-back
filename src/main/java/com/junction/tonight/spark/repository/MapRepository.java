@@ -1,12 +1,10 @@
 package com.junction.tonight.spark.repository;
 
-import com.junction.tonight.spark.domain.Map;
+import com.junction.tonight.spark.domain.ZepMap;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface MapRepository extends JpaRepository<Map, Long> {
-    Map findMapByMapHash(String hash);
+public interface MapRepository extends JpaRepository<ZepMap, Long> {
+    ZepMap findMapByMapHash(String hash);
 }

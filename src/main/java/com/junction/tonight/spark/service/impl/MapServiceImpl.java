@@ -1,6 +1,6 @@
 package com.junction.tonight.spark.service.impl;
 
-import com.junction.tonight.spark.domain.Map;
+import com.junction.tonight.spark.domain.ZepMap;
 import com.junction.tonight.spark.dto.MapInfo;
 import com.junction.tonight.spark.repository.MapRepository;
 import com.junction.tonight.spark.service.MapService;
@@ -21,8 +21,8 @@ public class MapServiceImpl implements MapService {
         String[] split = urlCollect.getMapUrl().split("play/");
         String mapHash = split[1];
 
-        Map map = new Map(mapHash, mapName);
-        repository.save(map);
+        ZepMap zepMap = new ZepMap(mapHash, mapName);
+        repository.save(zepMap);
 
 //        EnterResponse.builder()..build();
         return mapHash;

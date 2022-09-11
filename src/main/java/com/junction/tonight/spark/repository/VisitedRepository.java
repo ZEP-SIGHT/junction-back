@@ -1,11 +1,7 @@
 package com.junction.tonight.spark.repository;
 
-import com.junction.tonight.spark.domain.Map;
-import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;
-import com.junction.tonight.spark.dto.page1.TestInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.junction.tonight.spark.dto;
 
 
-import com.junction.tonight.spark.domain.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

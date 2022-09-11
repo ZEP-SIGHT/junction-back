@@ -9,26 +9,30 @@ import javax.persistence.*;
 
 
 @Data
-@Entity(name = "visitedTBL")
+@Entity(name = "visit_log")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Visited {
 
     @Id
-    @Column
-    @GeneratedValue
-    private Long vId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String mapHash;
 
-    @Column
-    private String designatedAreaName;
+    @JoinColumn(name = "zep_map")
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private ZepMap zepMap;
+
 
     @Column
-    private String vPlayerId;
+    private String areaName;
 
     @Column
-    private String vPlayerAuth;
+    private String playerId;
+
+    @Column
+    private String playerAuth;
 }
