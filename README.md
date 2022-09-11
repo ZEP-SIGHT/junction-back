@@ -1,6 +1,7 @@
 
-# Junction asia 2022 - Zep Track Finalist
+# Junction asia 2022 
 
+## Team TonightSpark - Zep Track Finalist🥇
 
 ## Back-end
 - [@ShinMyeongJi](https://github.com/ShinMyeongJi)
