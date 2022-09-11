@@ -6,13 +6,17 @@
 - [@ShinMyeongJi](https://github.com/ShinMyeongJi)
 - [@hugehoo](https://github.com/hugehoo)
 
-### Stacks
+## Stacks
 - Spring Boot 2.5.6
 - Java 11
 - JPA
 - Docker
 - MariaDB
 - AWS ubuntu
+
+## Branches
+- main (deploy)
+- dev (develop)
 
 ## Demo
 ![ezgif-5-0858cd14a4](https://user-images.githubusercontent.com/31172248/188212745-fa4e4221-fb4a-445e-8467-b72f31a51a9d.gif)
