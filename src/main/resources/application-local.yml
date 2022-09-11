@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: local
+    include:
+      - seoulapi
+  h2:
+    console:
+      enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/moohaehan?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: moohaehan
+    password: moo220327!
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+init_data: true
+
+http_https: http://
+server_domain: localhost:8080
+service_domain: localhost:8080
