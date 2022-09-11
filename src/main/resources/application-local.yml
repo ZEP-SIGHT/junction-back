@@ -4,19 +4,21 @@ server:
 spring:
   profiles:
     active: local
-    include:
-      - seoulapi
   h2:
     console:
       enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/moohaehan?serverTimezone=UTC&characterEncoding=UTF-8
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: moohaehan
-    password: moo220327!
+    url: jdbc:mariadb://zep-database.crtzkg9a7sbf.ap-northeast-2.rds.amazonaws.com:3306/zep
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: admin
+    password: dla00ckd!!
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 init_data: true
 
