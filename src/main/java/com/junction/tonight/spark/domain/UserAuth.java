@@ -1,5 +1,10 @@
 package com.junction.tonight.spark.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 /**
@@ -9,7 +14,13 @@ import javax.persistence.*;
  * date : 22. 9. 17.
  * description :
  */
-@Entity(name = "user_auth")
+
+@Data
+@Entity
+@Table(name = "user_auth", catalog = "zep")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserAuth {
 
     @Id
