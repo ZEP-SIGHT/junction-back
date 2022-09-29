@@ -25,8 +25,7 @@
 <br/>
 
 ## Demo
-![ezgif-5-0858cd14a4](https://user-images.githubusercontent.com/31172248/188212745-fa4e4221-fb4a-445e-8467-b72f31a51a9d.gif)
-
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/31172248/192938024-db5a6f2b-254d-4ee9-9683-82727a35674e.gif)
 <br/>
 
 ## Articles
