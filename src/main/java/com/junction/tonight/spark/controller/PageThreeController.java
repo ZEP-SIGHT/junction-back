@@ -3,7 +3,7 @@ package com.junction.tonight.spark.controller;
 
 import com.junction.tonight.spark.dto.BaseDataFormat;
 import com.junction.tonight.spark.dto.NumberVisitor;
-import com.junction.tonight.spark.service.impl.AreaService;
+import com.junction.tonight.spark.service.AreaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
