@@ -9,26 +9,26 @@ import javax.persistence.*;
 
 
 @Data
-@Entity(name = "visitedTBL")
+@Entity(name = "visit_log")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Visited {
 
     @Id
-    @Column
     @GeneratedValue
-    private Long vId;
+    @Column(name = "id")
+    private Long id;
 
-    @Column
+    @Column(name = "map_hash")
     private String mapHash;
 
-    @Column
-    private String designatedAreaName;
+    @Column(name = "area_name")
+    private String areaName;
 
-    @Column
-    private String vPlayerId;
+    @Column(name = "player_id")
+    private String playerId;
 
-    @Column
-    private String vPlayerAuth;
+    @Column(name = "player_auth")
+    private String playerAuth;
 }

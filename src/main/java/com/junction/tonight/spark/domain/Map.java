@@ -8,17 +8,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Data
-@Entity(name = "mapTBL")
+@Entity(name = "zep_map")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Map {
 
     @Id
-    @Column
+    @Column(name = "map_hash")
     private String mapHash;
+
+    @Column(name = "map_name")
     private String mapName;
 }

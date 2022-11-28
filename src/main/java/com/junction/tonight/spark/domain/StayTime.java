@@ -9,37 +9,37 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "stayTimeTBL")
+@Entity(name = "stay_time_log")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StayTime {
 
     @Id
-    @Column
+    @Column(name = "id")
     @GeneratedValue
-    private Long stId;
+    private Long id;
 
-    @Column
+    @Column(name = "map_hash")
     private String mapHash;
 
-    @Column
-    private String designatedAreaName;
+    @Column(name = "area_name")
+    private String areaName;
 
-    @Column
-    private String vPlayerId;
+    @Column(name = "player_id")
+    private String playerId;
 
-    @Column
-    private String vPlayerAuth;
+    @Column(name = "player_auth")
+    private String playerAuth;
 
-    @Column
+    @Column(name = "in_time")
     private LocalDateTime inTime;
 
-    @Column
+    @Column(name = "out_time")
     private LocalDateTime outTime;
 
-    @Column
     //@Comment("seconds 값만")
+    @Column(name = "stay_time")
     private String stayTime;
 
 
