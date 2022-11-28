@@ -2,6 +2,7 @@ package com.tonight.spark.service.impl;
 
 import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.domain.Visited;
+import com.tonight.spark.dto.VisitDto;
 import com.tonight.spark.repository.StayTimeRepository;
 import com.tonight.spark.repository.VisitedRepository;
 import com.tonight.spark.service.CollectService;
@@ -21,9 +22,16 @@ public class CollectServiceImpl implements CollectService {
     private final String COLON = ":";
 
     @Override
-    public Visited visitArea(Visited visited) {
+    public Visited visitArea(VisitDto visited) {
 
-        return visitedRepository.save(visited);
+        Visited build = Visited.builder()
+                .mapHash(visited.getMapHash())
+                .areaName(visited.getAreaName())
+                .playerId(visited.getPlayerId())
+                .playerAuth(visited.getPlayerAuth())
+                .build();
+
+        return visitedRepository.save(build);
     }
 
     @Override
