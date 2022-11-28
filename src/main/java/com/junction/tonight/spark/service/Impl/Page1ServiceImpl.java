@@ -1,15 +1,11 @@
 package com.junction.tonight.spark.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.junction.tonight.spark.common.ObjectConverter;
 import com.junction.tonight.spark.domain.StayTime;
 import com.junction.tonight.spark.domain.Visited;
 import com.junction.tonight.spark.dto.PageOneDto;
 import com.junction.tonight.spark.dto.TimeCount;
 import com.junction.tonight.spark.dto.page1.AuthType;
-import com.junction.tonight.spark.dto.page1.StatisForAuth;
-import com.junction.tonight.spark.dto.page1.TestInterface;
 import com.junction.tonight.spark.repository.StayTimeRepository;
 import com.junction.tonight.spark.repository.VisitedRepository;
 import com.junction.tonight.spark.service.Page1Service;
@@ -17,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +35,7 @@ public class Page1ServiceImpl implements Page1Service {
         List<StayTime> stayTimeByMapHash = stayTimeRepository.findStayTimeByMapHash(mapHash);
         List<Visited> VisitByMapHash = visitedRepository.findVisitedByMapHash(mapHash);
 
-        Set<String> areaSet = stayTimeByMapHash.stream().map(data -> data.getDesignatedAreaName()).collect(Collectors.toSet());
+        Set<String> areaSet = stayTimeByMapHash.stream().map(data -> data.getAreaName()).collect(Collectors.toSet());
 
         AuthType[] values = AuthType.values();
         HashMap<AuthType, List<StayTime>> authorityMap = new HashMap<>();
@@ -49,7 +44,7 @@ public class Page1ServiceImpl implements Page1Service {
             authorityMap.put(value, new ArrayList<>());
         }
         for (AuthType authType : authorityMap.keySet()) {
-            List<StayTime> collect = stayTimeByMapHash.stream().filter(data -> data.getVPlayerAuth().equals(authType.getCode())).collect(Collectors.toList());
+            List<StayTime> collect = stayTimeByMapHash.stream().filter(data -> data.getPlayerAuth().equals(authType.getCode())).collect(Collectors.toList());
             authorityMap.put(authType, collect);
         }
 
@@ -62,11 +57,11 @@ public class Page1ServiceImpl implements Page1Service {
 
             log.info("area : {} {}", areaHashMap.size(), areaHashMap);
             for (String area : areaSet) { // 9
-                List<StayTime> collect = stayTimeByMapHash.stream().filter(stayTime -> stayTime.getDesignatedAreaName().equals(area))
-                        .filter(data -> data.getVPlayerAuth().equals(authType.getCode()))
+                List<StayTime> collect = stayTimeByMapHash.stream().filter(stayTime -> stayTime.getAreaName().equals(area))
+                        .filter(data -> data.getPlayerAuth().equals(authType.getCode()))
                         .collect(Collectors.toList());
-                List<Visited> conditionVisited = VisitByMapHash.stream().filter(visited -> visited.getDesignatedAreaName().equals(area))
-                        .filter(data -> data.getVPlayerAuth().equals(authType.getCode()))
+                List<Visited> conditionVisited = VisitByMapHash.stream().filter(visited -> visited.getAreaName().equals(area))
+                        .filter(data -> data.getPlayerAuth().equals(authType.getCode()))
                         .collect(Collectors.toList());
 
                 int totalStayTime = 0;

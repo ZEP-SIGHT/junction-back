@@ -35,7 +35,7 @@ public class AreaServiceImpl implements AreaService {
         HashMap<String, Integer> areaMap = new HashMap<>();
 
         visitedByMap.forEach(visited -> {
-            String areaName = visited.getDesignatedAreaName();
+            String areaName = visited.getAreaName();
             if (areaMap.containsKey(areaName)) {
                 areaMap.put(areaName, areaMap.get(areaName) + 1);
             } else {
@@ -61,7 +61,7 @@ public class AreaServiceImpl implements AreaService {
         HashMap<String, Integer> bounceRateMap = new HashMap<>();
 
         stayTimes.forEach(visited ->
-                areaNameSet.add(visited.getDesignatedAreaName())
+                areaNameSet.add(visited.getAreaName())
         );
 
         areaNameSet.forEach(name -> {
@@ -72,14 +72,14 @@ public class AreaServiceImpl implements AreaService {
         Integer totalNum = 0;
         Integer bounceTotalNum = 0;
         for (StayTime stayTime : stayTimes) {
-            int integer = remainMap.get(stayTime.getDesignatedAreaName());
+            int integer = remainMap.get(stayTime.getAreaName());
             int stayTimeSeconds = Integer.parseInt(stayTime.getStayTime());
-            remainMap.put(stayTime.getDesignatedAreaName(), integer + stayTimeSeconds); // data.getStayTime()
+            remainMap.put(stayTime.getAreaName(), integer + stayTimeSeconds); // data.getStayTime()
             totalNum += stayTimeSeconds;
 
 
             if (Integer.parseInt(stayTime.getStayTime()) <= 5) {
-                bounceRateMap.put(stayTime.getDesignatedAreaName(), integer + 1); // data.getStayTime()
+                bounceRateMap.put(stayTime.getAreaName(), integer + 1); // data.getStayTime()
                 bounceTotalNum += 1;
             }
         }
