@@ -39,8 +39,6 @@ public class StayTime {
     private LocalDateTime outTime;
 
     //@Comment("seconds 값만")
-    @Column(name = "stay_time")
-    private String stayTime;
-
-
+    @Column(name = "duration")
+    private String duration;
 }

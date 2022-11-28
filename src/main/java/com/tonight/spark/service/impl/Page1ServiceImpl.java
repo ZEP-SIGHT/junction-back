@@ -66,7 +66,7 @@ public class Page1ServiceImpl implements Page1Service {
 
                 int totalStayTime = 0;
                 for (StayTime data : collect) {
-                    totalStayTime += Integer.parseInt(data.getStayTime());
+                    totalStayTime += Integer.parseInt(data.getDuration());
                 }
                 log.info("visit, stytime : {}", conditionVisited.size() + "," + totalStayTime);
                 areaHashMap.get(area).add(new TimeCount(conditionVisited.size(),totalStayTime));
