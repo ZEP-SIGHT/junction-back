@@ -4,6 +4,7 @@ import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.domain.Visited;
 import com.tonight.spark.dto.MapHashResponse;
 import com.tonight.spark.dto.MapInfo;
+import com.tonight.spark.dto.StayTimeDto;
 import com.tonight.spark.dto.VisitDto;
 import com.tonight.spark.service.CollectService;
 import com.tonight.spark.service.MapService;
@@ -48,9 +49,9 @@ public class DataCollectController extends RestControllerBase {
 
     @ResponseBody
     @PostMapping("leave")
-    public ResponseEntity<StayTime> createStayTime(@RequestBody StayTime stayTime) {
+    public ResponseEntity<StayTime> createStayTime(@RequestBody StayTimeDto stayTimeDto) {
 
-        StayTime s = collectService.leaveArea(stayTime);
+        StayTime s = collectService.leaveArea(stayTimeDto);
 
         return ResponseEntity.ok().body(s);
     }

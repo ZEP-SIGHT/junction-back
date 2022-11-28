@@ -2,7 +2,9 @@ package com.tonight.spark.service.impl;
 
 import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.domain.Visited;
+import com.tonight.spark.dto.StayTimeDto;
 import com.tonight.spark.dto.VisitDto;
+import com.tonight.spark.mapper.StayTimeMapper;
 import com.tonight.spark.repository.StayTimeRepository;
 import com.tonight.spark.repository.VisitedRepository;
 import com.tonight.spark.service.CollectService;
@@ -35,8 +37,10 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public StayTime leaveArea(StayTime stayTime) {
-        stayTime.setStayTime(String.valueOf(ChronoUnit.SECONDS.between(stayTime.getInTime(), stayTime.getOutTime())));
+    public StayTime leaveArea(StayTimeDto dto) {
+        long duration = ChronoUnit.SECONDS.between(dto.getInTime(), dto.getOutTime());
+        dto.setDuration(duration);
+        StayTime stayTime = StayTimeMapper.INSTANCE.dtoToStayTime(dto);
 
         return stayTimeRepository.save(stayTime);
     }
