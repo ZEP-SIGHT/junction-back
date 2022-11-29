@@ -21,7 +21,7 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
 
     //db
-    implementation 'mysql:mysql-connector-java'
+    runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
@@ -29,9 +29,17 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
 //    implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
+//    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    /* MapStruct */
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    compileOnly 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    /* MapStruct */
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 
