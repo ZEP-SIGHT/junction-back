@@ -3,7 +3,9 @@ package com.tonight.spark.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.domain.Visited;
+import com.tonight.spark.dto.AreaTimeCount;
 import com.tonight.spark.dto.PageOneDto;
+import com.tonight.spark.dto.PageOneDtoRefactoring;
 import com.tonight.spark.dto.TimeCount;
 import com.tonight.spark.dto.page1.AuthType;
 import com.tonight.spark.repository.StayTimeRepository;
@@ -13,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,28 @@ public class Page1ServiceImpl implements Page1Service {
     private final VisitedRepository visitedRepository;
 
     private final StayTimeRepository stayTimeRepository;
+
+    @Override
+    public List<PageOneDtoRefactoring> getDataForAuthRefactoring(String mapHash) throws JsonProcessingException {
+
+        List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
+        Map<String, Map<String, List<String>>> nearResult = stayTimes.stream().collect(
+                groupingBy(StayTime::getPlayerAuth,
+                        groupingBy(StayTime::getAreaName, mapping(StayTime::getDuration, toList()))
+                )
+        );
+
+        return nearResult.entrySet().stream()
+                .map(data -> PageOneDtoRefactoring.create(data.getKey(), getAreaTimeCounts(data.getValue())))
+                .collect(toList());
+    }
+
+    private static List<AreaTimeCount> getAreaTimeCounts(Map<String, List<String>> byAuth) {
+        return byAuth.keySet()
+                .stream()
+                .map(area -> AreaTimeCount.create(area, byAuth.get(area)))
+                .collect(toList());
+    }
 
     @Override
     public List<PageOneDto> getDataForAuth(String mapHash) throws JsonProcessingException {
