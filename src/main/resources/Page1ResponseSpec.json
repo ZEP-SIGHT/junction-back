@@ -1,0 +1,42 @@
+[
+  {
+    "authority": 1000,
+    "area": [
+      {
+        "name": "area1",
+        "time": 10,
+        "count": 10
+      },
+      {
+        "name": "area2",
+        "time": 10,
+        "count": 10
+      },
+      {
+        "name": "area3",
+        "time": 10,
+        "count": 10
+      }
+    ]
+  },
+  {
+    "authority": 1001,
+    "area": [
+      {
+        "name": "area1",
+        "time": 10,
+        "count": 10
+      },
+      {
+        "name": "area2",
+        "time": 10,
+        "count": 10
+      },
+      {
+        "name": "area3",
+        "time": 10,
+        "count": 10
+      }
+    ]
+  }
+]

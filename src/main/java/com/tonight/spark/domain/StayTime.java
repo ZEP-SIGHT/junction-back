@@ -41,4 +41,6 @@ public class StayTime {
     //@Comment("seconds 값만")
     @Column(name = "duration")
     private String duration;
+
+    private Integer durationInt;
 }
