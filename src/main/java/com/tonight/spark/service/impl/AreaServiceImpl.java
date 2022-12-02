@@ -2,21 +2,24 @@ package com.tonight.spark.service.impl;
 
 import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.domain.Visited;
+import com.tonight.spark.dto.AreaData;
 import com.tonight.spark.dto.BaseDataFormat;
 import com.tonight.spark.dto.NumberVisitor;
 import com.tonight.spark.repository.MapRepository;
 import com.tonight.spark.repository.StayTimeRepository;
 import com.tonight.spark.repository.VisitedRepository;
-import com.tonight.spark.service.AreaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
 
+// page3
 @Service
 @RequiredArgsConstructor
-public class AreaServiceImpl implements AreaService {
+public class AreaServiceImpl {
 
     // REPO 의존 주입
     private final VisitedRepository visitedRepository;
@@ -25,33 +28,22 @@ public class AreaServiceImpl implements AreaService {
     private final StayTimeRepository stayTimeRepository;
 
 
-    @Override
     public NumberVisitor getNumberOfVisitor(String mapHash) {
+        List<Visited> visits = visitedRepository.findVisitedByMapHash(mapHash);
+        Integer totalCount = visits.size();
 
-        int totalCount = 0;
+        Map<String, List<Visited>> collect = visits.stream().collect(groupingBy(Visited::getAreaName));
+        List<AreaData> areaData = collect.entrySet()
+                .stream()
+                .map(AreaData::create)
+                .collect(Collectors.toList());
 
-        // 지정한 스페이스를 조회
-        List<Visited> visitedByMap = visitedRepository.findVisitedByMapHash(mapHash);
-        HashMap<String, Integer> areaMap = new HashMap<>();
-
-        visitedByMap.forEach(visited -> {
-            String areaName = visited.getAreaName();
-            if (areaMap.containsKey(areaName)) {
-                areaMap.put(areaName, areaMap.get(areaName) + 1);
-            } else {
-                areaMap.put(areaName, 1);
-            }}
-        );
-        for (String areaName : areaMap.keySet()) {
-            totalCount += areaMap.get(areaName);
-        }
         return NumberVisitor.builder()
-                .totalNumber(totalCount)
-                .areaData(areaMap)
+                .totalCount(totalCount)
+                .areaData(areaData)
                 .build();
     }
 
-    @Override
     public HashMap<String, BaseDataFormat> getRemainTime(String mapHash) {
 
         List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);

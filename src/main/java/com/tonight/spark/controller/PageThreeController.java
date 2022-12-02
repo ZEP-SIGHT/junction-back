@@ -3,7 +3,7 @@ package com.tonight.spark.controller;
 
 import com.tonight.spark.dto.BaseDataFormat;
 import com.tonight.spark.dto.NumberVisitor;
-import com.tonight.spark.service.AreaService;
+import com.tonight.spark.service.impl.AreaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +15,8 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class PageThreeController {
-    private final AreaService service;
 
+    private final AreaServiceImpl service;
 
     @GetMapping("/area-user/{mapHash}")
     public ResponseEntity<NumberVisitor> getAreaUser(@PathVariable String mapHash) {
