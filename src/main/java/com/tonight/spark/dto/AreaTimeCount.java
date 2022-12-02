@@ -12,10 +12,10 @@ public class AreaTimeCount {
     private Integer time;
     private Integer count;
 
-    public static AreaTimeCount create(String area, List<String> durations) {
+    public static AreaTimeCount create(String area, List<Integer> durations) {
         return AreaTimeCount.builder()
                 .areaName(area)
-                .time(durations.stream().mapToInt(Integer::parseInt).sum())
+                .time(durations.stream().reduce(0, Integer::sum))
                 .count(durations.size())
                 .build();
     }

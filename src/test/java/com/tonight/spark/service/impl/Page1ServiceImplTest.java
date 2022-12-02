@@ -23,55 +23,55 @@ class Page1ServiceImplTest {
                 new StayTime(1L, "123", "area1", "1", "MASTER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(2L, "123", "area2", "2", "MEMBER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "10", 10),
+                        10),
                 new StayTime(3L, "123", "area3", "3", "TEACHER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(4L, "123", "area2", "1", "MASTER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "10", 10),
+                        10),
                 new StayTime(5L, "123", "area4", "2", "MEMBER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(6L, "123", "area2", "3", "TEACHER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "40", 40),
+                        40),
                 new StayTime(7L, "123", "area3", "2", "MEMBER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(8L, "123", "area1", "1", "MASTER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(9L, "123", "area2", "4", "TEACHER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(10L, "123", "area3", "6", "TEACHER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "30", 30),
+                        30),
                 new StayTime(11L, "123", "area1", "1", "MASTER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "20", 20),
+                        20),
                 new StayTime(12L, "123", "area1", "10", "MEMBER",
                         LocalDateTime.parse("2021-11-08T11:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                        "15", 15),
-        new StayTime(13L, "123", "area1", "11", "MEMBER",
-                LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                LocalDateTime.parse("2021-11-08T11:44:35.327959"),
-                "14", 14)
+                        15),
+                new StayTime(13L, "123", "area1", "11", "MEMBER",
+                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        14)
         );
     }
 
@@ -79,19 +79,20 @@ class Page1ServiceImplTest {
     public void Page1_리팩토링() {
         List<PageOneDto> finalResult = new ArrayList<>();
         List<StayTime> stayTimes = dataSetUp(); // mapHash Query 친 것
-        Map<String, Map<String, List<String>>> nearResult = stayTimes.stream().collect(
+        Map<String, Map<String, List<Integer>>> nearResult = stayTimes.stream().collect(
                 groupingBy(StayTime::getPlayerAuth,
                         groupingBy(StayTime::getAreaName, mapping(StayTime::getDuration, toList()))
                 )
         );
         Map<String, Map<String, TimeCount>> result = new HashMap<>();
         for (String auth : nearResult.keySet()) {
-            Map<String, List<String>> byAuth = nearResult.get(auth);
+            Map<String, List<Integer>> byAuth = nearResult.get(auth);
             Map<String, TimeCount> areaMap = new HashMap<>();
             ArrayList<AreaTimeCount> areaList = new ArrayList<>();
             for (String area : byAuth.keySet()) {
-                List<String> durations = byAuth.get(area);
-                areaMap.put(area, new TimeCount(durations.stream().mapToInt(Integer::parseInt).sum(), durations.size()));
+                List<Integer> durations = byAuth.get(area);
+                areaMap.put(area, new TimeCount(durations.stream().reduce(0, Integer::sum),
+                        durations.size()));
             }
         }
         System.out.println("PageOneDto");
@@ -101,7 +102,7 @@ class Page1ServiceImplTest {
             for (String s1 : timeCountMap.keySet()) {
                 System.out.println("------> " + s1);
                 TimeCount timeCount = timeCountMap.get(s1);
-                System.out.println("------> " +timeCount.toString());
+                System.out.println("------> " + timeCount.toString());
             }
         }
     }
@@ -109,7 +110,7 @@ class Page1ServiceImplTest {
     @Test
     void Page1_리팩토링_Dto_수정() {
         List<StayTime> stayTimes = dataSetUp(); // mapHash Query 친 것
-        Map<String, Map<String, List<String>>> nearResult = stayTimes.stream().collect(
+        Map<String, Map<String, List<Integer>>> nearResult = stayTimes.stream().collect(
                 groupingBy(StayTime::getPlayerAuth,
                         groupingBy(StayTime::getAreaName, mapping(StayTime::getDuration, toList()))
                 )
@@ -145,7 +146,7 @@ class Page1ServiceImplTest {
 
         // try3
         List<PageOneDtoRefactoring> finalResult = nearResult.entrySet().stream()
-                .map(data ->PageOneDtoRefactoring.create(data.getKey(), getAreaTimeCounts(data.getValue())))
+                .map(data -> PageOneDtoRefactoring.create(data.getKey(), getAreaTimeCounts(data.getValue())))
                 .collect(toList());
 
         for (PageOneDtoRefactoring pageOneDtoRefactoring : finalResult) {
@@ -154,10 +155,14 @@ class Page1ServiceImplTest {
         }
     }
 
-    private static List<AreaTimeCount> getAreaTimeCounts(Map<String, List<String>> byAuth) {
-        return byAuth.keySet()
+    private static List<AreaTimeCount> getAreaTimeCounts(Map<String, List<Integer>> byAuth) {
+        return byAuth.entrySet()
                 .stream()
-                .map(area -> AreaTimeCount.create(area, byAuth.get(area)))
+                .map(area -> AreaTimeCount.create(area.getKey(), area.getValue()))
                 .collect(toList());
+//        return byAuth.keySet()
+//                .stream()
+//                .map(area -> AreaTimeCount.create(area, byAuth.get(area)))
+//                .collect(toList());
     }
 }

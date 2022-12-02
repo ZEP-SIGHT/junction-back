@@ -73,12 +73,12 @@ public class AreaServiceImpl implements AreaService {
         Integer bounceTotalNum = 0;
         for (StayTime stayTime : stayTimes) {
             int integer = remainMap.get(stayTime.getAreaName());
-            int stayTimeSeconds = Integer.parseInt(stayTime.getDuration());
+            int stayTimeSeconds = stayTime.getDuration();
             remainMap.put(stayTime.getAreaName(), integer + stayTimeSeconds); // data.getStayTime()
             totalNum += stayTimeSeconds;
 
 
-            if (Integer.parseInt(stayTime.getDuration()) <= 5) {
+            if (stayTime.getDuration() <= 5) {
                 bounceRateMap.put(stayTime.getAreaName(), integer + 1); // data.getStayTime()
                 bounceTotalNum += 1;
             }
