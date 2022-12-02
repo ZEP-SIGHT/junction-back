@@ -1,14 +1,12 @@
 package com.tonight.spark.controller;
 
 
-import com.tonight.spark.dto.BaseDataFormat;
 import com.tonight.spark.dto.NumberVisitor;
+import com.tonight.spark.dto.page3.RemainBounceDto;
 import com.tonight.spark.service.impl.AreaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("api/v1/page3")
@@ -25,8 +23,8 @@ public class PageThreeController {
     }
 
     @GetMapping("/remain-time/{mapHash}")
-    public ResponseEntity<HashMap<String, BaseDataFormat>> getRemainTime(@PathVariable String mapHash) {
-        HashMap<String, BaseDataFormat> remainTime = service.getRemainTime(mapHash);
+    public ResponseEntity<RemainBounceDto> getRemainTime(@PathVariable String mapHash) {
+        RemainBounceDto remainTime = service.getRemainBounceTime(mapHash);
         return ResponseEntity.ok().body(remainTime);
     }
 }
