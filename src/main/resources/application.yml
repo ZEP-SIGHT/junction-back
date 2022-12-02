@@ -13,7 +13,7 @@ spring:
 #    database-platform: com.hospital.petcare.common.config.dialect.MySqlCustomDialect
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       use_sql_comments: true
       hibernate:
