@@ -12,12 +12,11 @@ import java.util.List;
 import static com.tonight.spark.controller.RestControllerBase.API_PREFIX;
 
 @RestController
-@RequestMapping(PageTwoController.URL_PREFIX)
+@RequestMapping("/api/v1/page2")
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class PageTwoController {
 
-    static final String URL_PREFIX = API_PREFIX + "/page2";
     private final ChartService chartService;
 
     @GetMapping("/chart-area/{mapHash}")
