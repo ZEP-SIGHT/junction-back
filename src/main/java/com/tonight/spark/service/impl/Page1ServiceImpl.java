@@ -34,7 +34,7 @@ public class Page1ServiceImpl implements Page1Service {
     public List<PageOneDtoRefactoring> getDataForAuthRefactoring(String mapHash) throws JsonProcessingException {
 
         List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
-        Map<String, Map<String, List<String>>> nearResult = stayTimes.stream().collect(
+        Map<String, Map<String, List<Integer>>> nearResult = stayTimes.stream().collect(
                 groupingBy(StayTime::getPlayerAuth,
                         groupingBy(StayTime::getAreaName, mapping(StayTime::getDuration, toList()))
                 )
@@ -45,10 +45,11 @@ public class Page1ServiceImpl implements Page1Service {
                 .collect(toList());
     }
 
-    private static List<AreaTimeCount> getAreaTimeCounts(Map<String, List<String>> byAuth) {
-        return byAuth.keySet()
+    private static List<AreaTimeCount> getAreaTimeCounts(Map<String, List<Integer>> byAuth) {
+
+        return byAuth.entrySet()
                 .stream()
-                .map(area -> AreaTimeCount.create(area, byAuth.get(area)))
+                .map(area -> AreaTimeCount.create(area.getKey(), area.getValue()))
                 .collect(toList());
     }
 
@@ -90,7 +91,7 @@ public class Page1ServiceImpl implements Page1Service {
 
                 int totalStayTime = 0;
                 for (StayTime data : collect) {
-                    totalStayTime += Integer.parseInt(data.getDuration());
+                    totalStayTime += (data.getDuration());
                 }
                 log.info("visit, stytime : {}", conditionVisited.size() + "," + totalStayTime);
                 areaHashMap.get(area).add(new TimeCount(conditionVisited.size(),totalStayTime));

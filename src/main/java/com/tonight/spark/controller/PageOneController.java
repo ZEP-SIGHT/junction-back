@@ -2,6 +2,7 @@ package com.tonight.spark.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tonight.spark.dto.PageOneDto;
+import com.tonight.spark.dto.PageOneDtoRefactoring;
 import com.tonight.spark.service.Page1Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,13 @@ public class PageOneController extends RestControllerBase {
     @ResponseBody
     public ResponseEntity<List<PageOneDto>> getAuthStatistic(@PathVariable String mapHash) throws JsonProcessingException {
         List<PageOneDto> dataForAuth = page1Service.getDataForAuth(mapHash);
+        return ResponseEntity.ok().body(dataForAuth);
+    }
+
+    @GetMapping("/{mapHash}")
+    @ResponseBody
+    public ResponseEntity<List<PageOneDtoRefactoring>> getAuthStatisticRefactForing(@PathVariable String mapHash) throws JsonProcessingException {
+        List<PageOneDtoRefactoring> dataForAuth = page1Service.getDataForAuthRefactoring(mapHash);
         return ResponseEntity.ok().body(dataForAuth);
     }
 
