@@ -38,8 +38,7 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public StayTime leaveArea(StayTimeDto dto) {
-        long duration = ChronoUnit.SECONDS.between(dto.getInTime(), dto.getOutTime());
-        dto.setDuration(duration);
+        dto.setDuration(ChronoUnit.SECONDS.between(dto.getInTime(), dto.getOutTime()));
         StayTime stayTime = StayTimeMapper.INSTANCE.dtoToStayTime(dto);
 
         return stayTimeRepository.save(stayTime);
