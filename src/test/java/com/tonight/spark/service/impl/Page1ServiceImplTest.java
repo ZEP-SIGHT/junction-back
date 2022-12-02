@@ -77,7 +77,7 @@ class Page1ServiceImplTest {
 
     @Test
     public void Page1_리팩토링() {
-        List<PageOneDto> finalResult = new ArrayList<>();
+        List<PageOneDtoOLD> finalResult = new ArrayList<>();
         List<StayTime> stayTimes = dataSetUp(); // mapHash Query 친 것
         Map<String, Map<String, List<Integer>>> nearResult = stayTimes.stream().collect(
                 groupingBy(StayTime::getPlayerAuth,
@@ -145,13 +145,13 @@ class Page1ServiceImplTest {
 //        }
 
         // try3
-        List<PageOneDtoRefactoring> finalResult = nearResult.entrySet().stream()
-                .map(data -> PageOneDtoRefactoring.create(data.getKey(), getAreaTimeCounts(data.getValue())))
+        List<PageOneDto> finalResult = nearResult.entrySet().stream()
+                .map(data -> PageOneDto.create(data.getKey(), getAreaTimeCounts(data.getValue())))
                 .collect(toList());
 
-        for (PageOneDtoRefactoring pageOneDtoRefactoring : finalResult) {
-            System.out.println(pageOneDtoRefactoring.authority);
-            System.out.println(pageOneDtoRefactoring.areas.toString());
+        for (PageOneDto pageOneDto : finalResult) {
+            System.out.println(pageOneDto.authority);
+            System.out.println(pageOneDto.areas.toString());
         }
     }
 
