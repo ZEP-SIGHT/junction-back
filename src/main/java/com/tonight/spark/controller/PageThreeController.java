@@ -10,16 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-import static com.tonight.spark.controller.RestControllerBase.API_PREFIX;
-
 @RestController
-@RequestMapping(PageThreeController.URL_PREFIX)
+@RequestMapping("api/v1/page3")
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"https://tonightspark-frontend.pages.dev", "http://localhost:3000"})
 public class PageThreeController {
-
-    static final String URL_PREFIX = API_PREFIX + "/page3";
-
     private final AreaService service;
 
 
