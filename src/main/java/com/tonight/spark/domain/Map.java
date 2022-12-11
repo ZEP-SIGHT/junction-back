@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity(name = "zep_map")
@@ -18,6 +16,7 @@ public class Map {
 
     @Id
     @Column(name = "map_hash")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String mapHash;
 
     @Column(name = "map_name")
