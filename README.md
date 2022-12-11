@@ -19,8 +19,7 @@
 
 ## Branches
 - main (deploy)
-- dev (develop)
-  - dev/hoo (mainly working on)
+- develop (currently working branch)
 
 <br/>
 
