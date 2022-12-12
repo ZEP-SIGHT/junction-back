@@ -3,28 +3,28 @@ package com.tonight.spark.service.impl;
 import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.domain.Visited;
 import com.tonight.spark.dto.AreaData;
-import com.tonight.spark.dto.BaseDataFormat;
 import com.tonight.spark.dto.NumberVisitor;
-import com.tonight.spark.repository.MapRepository;
+import com.tonight.spark.dto.page3.BounceDto;
+import com.tonight.spark.dto.page3.RemainBounceDto;
+import com.tonight.spark.dto.page3.RemainDto;
 import com.tonight.spark.repository.StayTimeRepository;
 import com.tonight.spark.repository.VisitedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 // page3
 @Service
 @RequiredArgsConstructor
 public class AreaServiceImpl {
 
-    // REPO 의존 주입
     private final VisitedRepository visitedRepository;
-    private final MapRepository mapRepository;
-
     private final StayTimeRepository stayTimeRepository;
 
 
@@ -43,55 +43,33 @@ public class AreaServiceImpl {
                 .areaData(areaData)
                 .build();
     }
-
-    public HashMap<String, BaseDataFormat> getRemainTime(String mapHash) {
-
+    public RemainBounceDto getRemainBounceTime(String mapHash) {
         List<StayTime> stayTimes = stayTimeRepository.findStayTimeByMapHash(mapHash);
-        Set<String> areaNameSet = new HashSet<>();
-
-        HashMap<String, Integer> remainMap = new HashMap<>();
-        HashMap<String, Integer> bounceRateMap = new HashMap<>();
-
-        stayTimes.forEach(visited ->
-                areaNameSet.add(visited.getAreaName())
-        );
-
-        areaNameSet.forEach(name -> {
-            remainMap.put(name, 0);
-            bounceRateMap.put(name, 0);
-        });
-
-        Integer totalNum = 0;
-        Integer bounceTotalNum = 0;
-        for (StayTime stayTime : stayTimes) {
-            int integer = remainMap.get(stayTime.getAreaName());
-            int stayTimeSeconds = stayTime.getDuration();
-            remainMap.put(stayTime.getAreaName(), integer + stayTimeSeconds); // data.getStayTime()
-            totalNum += stayTimeSeconds;
-
-
-            if (stayTime.getDuration() <= 5) {
-                bounceRateMap.put(stayTime.getAreaName(), integer + 1); // data.getStayTime()
-                bounceTotalNum += 1;
-            }
-        }
-
-        for (String remainKey : remainMap.keySet()) {
-            if (remainMap.get(remainKey) != 0) {
-                int i = bounceRateMap.get(remainKey) / remainMap.get(remainKey);
-                bounceRateMap.put(remainKey, i);
-            }
-        }
-
-        BaseDataFormat remainTimeFormat = BaseDataFormat.builder().totalNumber(totalNum.doubleValue()).areaData(remainMap).build();
-        BaseDataFormat bounceRateFormat = BaseDataFormat.builder().totalNumber(0d).areaData(bounceRateMap).build();
-        if (totalNum != 0) {
-            double mod = (double) bounceTotalNum / (double) totalNum;
-            bounceRateFormat = BaseDataFormat.builder().totalNumber(mod).areaData(bounceRateMap).build();
-        }
-        HashMap<String, BaseDataFormat> dataFormatMap = new HashMap<>();
-        dataFormatMap.put("remain", remainTimeFormat);
-        dataFormatMap.put("bounce", bounceRateFormat);
-        return dataFormatMap;
+//        Set<String> areaSet = stayTimes.stream().map(StayTime::getAreaName).collect(Collectors.toSet());
+        Map<String, Integer> remainTimes = stayTimes.stream()
+                .collect(groupingBy(StayTime::getAreaName, summingInt(StayTime::getDuration)));
+        List<RemainDto> remainingTimes = remainTimes.entrySet().stream()
+                .map(RemainDto::create).collect(toList());
+        Map<String, Integer> bounceTimes = stayTimes.stream()
+                .collect(groupingBy(StayTime::getAreaName,
+                        filtering(data -> data.getDuration() <= 5, summingInt(StayTime::getDuration)))
+                );
+        DecimalFormat form = new DecimalFormat("#.#");
+        List<BounceDto> collect = bounceTimes.entrySet()
+                .stream()
+                .map(data -> BounceDto.builder()
+                        .areaName(data.getKey())
+                        .accumulateTime(form.format((double) data.getValue() / remainTimes.get(data.getKey()) * 100))
+                        .build()
+                )
+                .collect(toList());
+        Integer totalRemainTimes = remainTimes.values().stream().reduce(0, Integer::sum);
+        Integer totalBounceTimes = bounceTimes.values().stream().reduce(0, Integer::sum);
+        return RemainBounceDto.builder()
+                .totalRemainTime(totalRemainTimes)
+                .remainDto(remainingTimes)
+                .totalBounceTimes(form.format((double) totalBounceTimes / totalRemainTimes * 100))
+                .bounceDto(collect)
+                .build();
     }
 }
