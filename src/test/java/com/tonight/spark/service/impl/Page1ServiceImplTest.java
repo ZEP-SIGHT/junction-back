@@ -21,56 +21,56 @@ class Page1ServiceImplTest {
     private static List<StayTime> dataSetUp() {
         return List.of(
                 new StayTime(1L, "123", "area1", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T01:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
                         20),
                 new StayTime(2L, "123", "area2", "2", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T14:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T16:44:35.327959"),
                         10),
                 new StayTime(3L, "123", "area3", "3", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T15:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T19:44:35.327959"),
                         20),
                 new StayTime(4L, "123", "area2", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T04:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T10:44:35.327959"),
                         10),
                 new StayTime(5L, "123", "area4", "2", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T02:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T09:44:35.327959"),
                         20),
                 new StayTime(6L, "123", "area2", "3", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T06:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T09:44:35.327959"),
                         40),
                 new StayTime(7L, "123", "area3", "2", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T02:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T10:44:35.327959"),
                         20),
                 new StayTime(8L, "123", "area1", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T12:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T13:44:35.327959"),
                         20),
                 new StayTime(9L, "123", "area2", "4", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T09:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
                         20),
                 new StayTime(10L, "123", "area3", "6", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T01:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
                         30),
                 new StayTime(11L, "123", "area1", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T05:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T07:44:35.327959"),
                         20),
                 new StayTime(12L, "123", "area1", "10", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T14:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T18:44:35.327959"),
                         15),
                 new StayTime(13L, "123", "area1", "11", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T02:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T05:44:35.327959"),
                         14)
         );
     }
@@ -164,5 +164,23 @@ class Page1ServiceImplTest {
 //                .stream()
 //                .map(area -> AreaTimeCount.create(area, byAuth.get(area)))
 //                .collect(toList());
+    }
+
+    @Test
+    public void ChartArea_Logic_Test() {
+        List<StayTime> stayTimes = dataSetUp(); // mapHash Query 친 것
+
+        Map<String, Map<Integer, Long>> result = stayTimes.stream()
+                .collect(groupingBy(StayTime::getAreaName,
+                        groupingBy(data -> data.getInTime().getHour(), counting())));
+
+        List<ChartArea> finalResult = result.entrySet()
+                .stream()
+                .map(ChartArea::new)
+                .collect(toList());
+        for (ChartArea chartArea : finalResult) {
+            System.out.println(chartArea.getAreaName());
+            System.out.println(chartArea.getTimeCountList());
+        }
     }
 }
