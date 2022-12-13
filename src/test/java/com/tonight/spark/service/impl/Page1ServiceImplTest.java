@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.*;
 
@@ -21,56 +23,56 @@ class Page1ServiceImplTest {
     private static List<StayTime> dataSetUp() {
         return List.of(
                 new StayTime(1L, "123", "area1", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T01:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
                         20),
                 new StayTime(2L, "123", "area2", "2", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T14:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T16:44:35.327959"),
                         10),
                 new StayTime(3L, "123", "area3", "3", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T15:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T19:44:35.327959"),
                         20),
                 new StayTime(4L, "123", "area2", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T04:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T10:44:35.327959"),
                         10),
                 new StayTime(5L, "123", "area4", "2", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T02:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T09:44:35.327959"),
                         20),
                 new StayTime(6L, "123", "area2", "3", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T06:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T09:44:35.327959"),
                         40),
                 new StayTime(7L, "123", "area3", "2", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T02:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T10:44:35.327959"),
                         20),
                 new StayTime(8L, "123", "area1", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T12:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T13:44:35.327959"),
                         20),
                 new StayTime(9L, "123", "area2", "4", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T09:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
                         20),
                 new StayTime(10L, "123", "area3", "6", "TEACHER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T01:44:30.327959"),
                         LocalDateTime.parse("2021-11-08T11:44:35.327959"),
                         30),
                 new StayTime(11L, "123", "area1", "1", "MASTER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T05:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T07:44:35.327959"),
                         20),
                 new StayTime(12L, "123", "area1", "10", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T14:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T18:44:35.327959"),
                         15),
                 new StayTime(13L, "123", "area1", "11", "MEMBER",
-                        LocalDateTime.parse("2021-11-08T11:44:30.327959"),
-                        LocalDateTime.parse("2021-11-08T11:44:35.327959"),
+                        LocalDateTime.parse("2021-11-08T02:44:30.327959"),
+                        LocalDateTime.parse("2021-11-08T05:44:35.327959"),
                         14)
         );
     }
@@ -85,26 +87,26 @@ class Page1ServiceImplTest {
                 )
         );
         Map<String, Map<String, TimeCount>> result = new HashMap<>();
-        for (String auth : nearResult.keySet()) {
-            Map<String, List<Integer>> byAuth = nearResult.get(auth);
-            Map<String, TimeCount> areaMap = new HashMap<>();
-            ArrayList<AreaTimeCount> areaList = new ArrayList<>();
-            for (String area : byAuth.keySet()) {
-                List<Integer> durations = byAuth.get(area);
-                areaMap.put(area, new TimeCount(durations.stream().reduce(0, Integer::sum),
-                        durations.size()));
-            }
-        }
-        System.out.println("PageOneDto");
-        for (String s : result.keySet()) {
-            System.out.println(s);
-            Map<String, TimeCount> timeCountMap = result.get(s);
-            for (String s1 : timeCountMap.keySet()) {
-                System.out.println("------> " + s1);
-                TimeCount timeCount = timeCountMap.get(s1);
-                System.out.println("------> " + timeCount.toString());
-            }
-        }
+//        for (String auth : nearResult.keySet()) {
+//            Map<String, List<Integer>> byAuth = nearResult.get(auth);
+//            Map<String, TimeCount> areaMap = new HashMap<>();
+//            ArrayList<AreaTimeCount> areaList = new ArrayList<>();
+//            for (String area : byAuth.keySet()) {
+//                List<Integer> durations = byAuth.get(area);
+//                areaMap.put(area, new TimeCount(durations.stream().reduce(0, Integer::sum),
+//                        durations.size()));
+//            }
+//        }
+//        System.out.println("PageOneDto");
+//        for (String s : result.keySet()) {
+//            System.out.println(s);
+//            Map<String, TimeCount> timeCountMap = result.get(s);
+//            for (String s1 : timeCountMap.keySet()) {
+//                System.out.println("------> " + s1);
+//                TimeCount timeCount = timeCountMap.get(s1);
+//                System.out.println("------> " + timeCount.toString());
+//            }
+//        }
     }
 
     @Test
@@ -158,11 +160,44 @@ class Page1ServiceImplTest {
     private static List<AreaTimeCount> getAreaTimeCounts(Map<String, List<Integer>> byAuth) {
         return byAuth.entrySet()
                 .stream()
-                .map(area -> AreaTimeCount.create(area.getKey(), area.getValue()))
+                .map(AreaTimeCount::create)
                 .collect(toList());
 //        return byAuth.keySet()
 //                .stream()
 //                .map(area -> AreaTimeCount.create(area, byAuth.get(area)))
 //                .collect(toList());
+    }
+
+    @Test
+    public void ChartArea_Logic_Test() {
+        List<StayTime> stayTimes = dataSetUp(); // mapHash Query 친 것
+
+        Map<String, Map<Integer, Long>> result = stayTimes.stream()
+                .collect(groupingBy(StayTime::getAreaName,
+                        groupingBy(data -> data.getInTime().getHour(), counting())));
+
+        List<ChartArea> finalResult = result.entrySet()
+                .stream()
+                .map(ChartArea::new)
+                .collect(toList());
+        for (ChartArea chartArea : finalResult) {
+            System.out.println(chartArea.getAreaName());
+            System.out.println(chartArea.getTimeCountList());
+        }
+
+        Map<String, Long> timeCountingMap = stayTimes.stream()
+                .collect(groupingBy(data -> Integer.toString(data.getInTime().getHour()).concat(":00"), counting()));
+
+        Map<String, Integer> hourMap = IntStream.range(0, 24)
+                .mapToObj(d -> Integer.toString(d).concat(":00"))
+                .collect(toMap(Function.identity(), i -> 0));
+
+        timeCountingMap.forEach((key, value) ->
+                hourMap.put(key, value.intValue())
+        );
+        List<TimeCount> timeCountDto = hourMap.entrySet().stream()
+                .map(TimeCount::new)
+                .collect(toList());
+        System.out.println(timeCountDto);
     }
 }

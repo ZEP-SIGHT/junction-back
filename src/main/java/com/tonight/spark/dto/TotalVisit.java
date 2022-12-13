@@ -13,8 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class TotalVisit {
     public int totalVisit;
-    public List<TimeCountDto> timeCount;
-
-
-
+    public List<TimeCount> timeCount;
 }

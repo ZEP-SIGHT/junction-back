@@ -40,7 +40,7 @@ public class Page1ServiceImpl implements Page1Service {
 
         return byAuth.entrySet()
                 .stream()
-                .map(area -> AreaTimeCount.create(area.getKey(), area.getValue()))
+                .map(AreaTimeCount::create)
                 .collect(toList());
     }
 
