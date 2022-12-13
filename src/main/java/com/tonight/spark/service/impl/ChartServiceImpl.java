@@ -3,14 +3,12 @@ package com.tonight.spark.service.impl;
 import com.tonight.spark.domain.StayTime;
 import com.tonight.spark.dto.ChartArea;
 import com.tonight.spark.dto.TimeCount;
-import com.tonight.spark.dto.TimeCountDto;
 import com.tonight.spark.dto.TotalVisit;
 import com.tonight.spark.repository.StayTimeRepository;
 import com.tonight.spark.service.ChartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -58,8 +56,8 @@ public class ChartServiceImpl implements ChartService {
                 hourMap.put(key, value.intValue())
         );
 
-        List<TimeCountDto> timeCountDto = hourMap.entrySet().stream()
-                .map(TimeCountDto::new)
+        List<TimeCount> timeCountDto = hourMap.entrySet().stream()
+                .map(TimeCount::new)
                 .collect(toList());
 
         return TotalVisit.builder()
