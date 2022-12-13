@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.*;
 
@@ -85,26 +87,26 @@ class Page1ServiceImplTest {
                 )
         );
         Map<String, Map<String, TimeCount>> result = new HashMap<>();
-        for (String auth : nearResult.keySet()) {
-            Map<String, List<Integer>> byAuth = nearResult.get(auth);
-            Map<String, TimeCount> areaMap = new HashMap<>();
-            ArrayList<AreaTimeCount> areaList = new ArrayList<>();
-            for (String area : byAuth.keySet()) {
-                List<Integer> durations = byAuth.get(area);
-                areaMap.put(area, new TimeCount(durations.stream().reduce(0, Integer::sum),
-                        durations.size()));
-            }
-        }
-        System.out.println("PageOneDto");
-        for (String s : result.keySet()) {
-            System.out.println(s);
-            Map<String, TimeCount> timeCountMap = result.get(s);
-            for (String s1 : timeCountMap.keySet()) {
-                System.out.println("------> " + s1);
-                TimeCount timeCount = timeCountMap.get(s1);
-                System.out.println("------> " + timeCount.toString());
-            }
-        }
+//        for (String auth : nearResult.keySet()) {
+//            Map<String, List<Integer>> byAuth = nearResult.get(auth);
+//            Map<String, TimeCount> areaMap = new HashMap<>();
+//            ArrayList<AreaTimeCount> areaList = new ArrayList<>();
+//            for (String area : byAuth.keySet()) {
+//                List<Integer> durations = byAuth.get(area);
+//                areaMap.put(area, new TimeCount(durations.stream().reduce(0, Integer::sum),
+//                        durations.size()));
+//            }
+//        }
+//        System.out.println("PageOneDto");
+//        for (String s : result.keySet()) {
+//            System.out.println(s);
+//            Map<String, TimeCount> timeCountMap = result.get(s);
+//            for (String s1 : timeCountMap.keySet()) {
+//                System.out.println("------> " + s1);
+//                TimeCount timeCount = timeCountMap.get(s1);
+//                System.out.println("------> " + timeCount.toString());
+//            }
+//        }
     }
 
     @Test
@@ -182,5 +184,20 @@ class Page1ServiceImplTest {
             System.out.println(chartArea.getAreaName());
             System.out.println(chartArea.getTimeCountList());
         }
+
+        Map<String, Long> timeCountingMap = stayTimes.stream()
+                .collect(groupingBy(data -> Integer.toString(data.getInTime().getHour()).concat(":00"), counting()));
+
+        Map<String, Integer> hourMap = IntStream.range(0, 24)
+                .mapToObj(d -> Integer.toString(d).concat(":00"))
+                .collect(toMap(Function.identity(), i -> 0));
+
+        timeCountingMap.forEach((key, value) ->
+                hourMap.put(key, value.intValue())
+        );
+        List<TimeCount> timeCountDto = hourMap.entrySet().stream()
+                .map(TimeCount::new)
+                .collect(toList());
+        System.out.println(timeCountDto);
     }
 }
