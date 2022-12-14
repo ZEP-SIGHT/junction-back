@@ -43,7 +43,7 @@ public class TimeCount {
 
             String concatHour = hourConcat(hour);
             if (chartsByAreaMap.containsKey(concatHour)) {
-                chartsByAreaMap.put(concatHour, chartsByAreaMap.get(hour) + 1);
+                chartsByAreaMap.put(concatHour, chartsByAreaMap.get(concatHour) + 1);
             } else {
                 chartsByAreaMap.put(concatHour, 1);
             }
