@@ -38,6 +38,11 @@ public class DataCollectController extends RestControllerBase {
 
     private final CollectService collectService;
 
+    @GetMapping("health-check")
+    public String healthCheck() {
+        return "200 OK";
+    }
+
     @PostMapping("visit")
     public ResponseEntity<Visited> createVisited(@RequestBody VisitDto visitDto) {
 
