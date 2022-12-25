@@ -3,6 +3,6 @@
 - [X] Page1/2/3 code refactoring
 - [ ] pin point 설치
 - [ ] User 권한 enum 지정
-- [ ] Github action 자동배포 설정
+- [ ] Github action 자동배포 설정 -> EC2
  
 
