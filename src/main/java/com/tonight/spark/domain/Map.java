@@ -15,8 +15,10 @@ import javax.persistence.*;
 public class Map {
 
     @Id
-    @Column(name = "map_hash")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "map_hash")
     private String mapHash;
 
     @Column(name = "map_name")
