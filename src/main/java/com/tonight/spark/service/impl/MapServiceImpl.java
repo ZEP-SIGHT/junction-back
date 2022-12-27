@@ -16,15 +16,19 @@ public class MapServiceImpl implements MapService {
     public String saveUrlInfo(MapInfo urlCollect) {
 
         String mapName = urlCollect.getMapName();
-
-        // url 에서 hash 값 추출
         String[] split = urlCollect.getMapUrl().split("play/");
         String mapHash = split[1];
 
-        Map map = new Map(mapHash, mapName);
+        repository.findMapByMapHash(mapHash).ifPresent(a -> {
+            throw new IllegalArgumentException("이미 존재하는 Zep Map 입니다.");
+        });
+
+        Map map = Map.builder()
+                .mapName(mapName)
+                .mapHash(mapHash)
+                .build();
         repository.save(map);
 
-//        EnterResponse.builder()..build();
         return mapHash;
     }
 
