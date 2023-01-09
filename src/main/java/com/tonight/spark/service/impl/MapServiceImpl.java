@@ -7,6 +7,8 @@ import com.tonight.spark.service.MapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class MapServiceImpl implements MapService {
@@ -21,10 +23,14 @@ public class MapServiceImpl implements MapService {
         String[] split = urlCollect.getMapUrl().split("play/");
         String mapHash = split[1];
 
-        Map map = new Map(mapHash, mapName);
-        repository.save(map);
-
-//        EnterResponse.builder()..build();
+        Map findMap = repository.findMapByMapHash(mapHash);
+        if (Objects.isNull(findMap)) {
+            Map map = Map.builder()
+                    .mapHash(mapHash)
+                    .mapName(mapName)
+                    .build();
+            repository.save(map);
+        }
         return mapHash;
     }
 
