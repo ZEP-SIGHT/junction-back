@@ -56,12 +56,11 @@ public class DataCollectController extends RestControllerBase {
     @PostMapping("leave")
     public ResponseEntity<StayTime> createStayTime(@RequestBody StayTimeDto stayTimeDto) {
 
-        StayTime s = collectService.leaveArea(stayTimeDto);
-
-        return ResponseEntity.ok().body(s);
+        StayTime stayTime = collectService.leaveArea(stayTimeDto);
+        return ResponseEntity.ok().body(stayTime);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<MapHashResponse> getUrl(@RequestBody MapInfo url) {
         String info = mapService.saveUrlInfo(url);
         MapHashResponse response = MapHashResponse.builder()

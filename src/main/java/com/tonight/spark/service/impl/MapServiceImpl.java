@@ -18,8 +18,6 @@ public class MapServiceImpl implements MapService {
     public String saveUrlInfo(MapInfo urlCollect) {
 
         String mapName = urlCollect.getMapName();
-
-        // url 에서 hash 값 추출
         String[] split = urlCollect.getMapUrl().split("play/");
         String mapHash = split[1];
 
