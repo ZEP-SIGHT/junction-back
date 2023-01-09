@@ -6,5 +6,4 @@
 - [ ] Github action 자동배포 설정 -> EC2
 - [ ] RestExceptionHandler 생성
 - [ ] 최대 동접자 수
- 
 
