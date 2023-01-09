@@ -1,13 +1,10 @@
 package com.tonight.spark.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
 @Entity(name = "zep_map")
 @Builder
 @AllArgsConstructor
@@ -16,6 +13,7 @@ public class Map {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "map_hash")

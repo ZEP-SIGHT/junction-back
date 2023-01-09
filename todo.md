@@ -4,5 +4,7 @@
 - [ ] pin point 설치
 - [ ] User 권한 enum 지정
 - [ ] Github action 자동배포 설정 -> EC2
+- [ ] RestExceptionHandler 생성
+- [ ] 최대 동접자 수
  
 
