@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface MapRepository extends JpaRepository<Map, Long> {
-    Optional<Map> findMapByMapHash(String hash);
+    Map findMapByMapHash(String hash);
 }
