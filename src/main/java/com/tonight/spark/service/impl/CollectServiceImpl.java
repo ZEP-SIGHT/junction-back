@@ -11,8 +11,6 @@ import com.tonight.spark.service.CollectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
-
 @Service
 @RequiredArgsConstructor
 public class CollectServiceImpl implements CollectService {
@@ -38,7 +36,6 @@ public class CollectServiceImpl implements CollectService {
 
     @Override
     public StayTime leaveArea(StayTimeDto dto) {
-        dto.setDuration(ChronoUnit.SECONDS.between(dto.getInTime(), dto.getOutTime()));
         StayTime stayTime = StayTimeMapper.INSTANCE.dtoToStayTime(dto);
 
         return stayTimeRepository.save(stayTime);
