@@ -68,3 +68,7 @@ targetCompatibility = JavaVersion.VERSION_1_9
 test {
     useJUnitPlatform()
 }
+
+jar {
+    enabled = false
+}
