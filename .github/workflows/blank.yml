@@ -36,8 +36,12 @@ jobs:
         java-version: '11'
 
     # (3) Gradle build (Test 제외)
+    - name: Grant execute permisson for gradlew # gradlew 실행 권한 부여
+      run: chmod +x gradlew
     - name: Build with Gradle
-      uses: ./gradlew build -x test
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: build
 
 
     # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
