@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.mokpo.spring'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = "1.9"
 
 repositories {
     mavenCentral()
@@ -17,11 +17,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
 
     //db
-    implementation 'mysql:mysql-connector-java'
+    runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
@@ -29,9 +33,17 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
 //    implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
+//    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    /* MapStruct */
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    compileOnly 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    /* MapStruct */
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 
@@ -52,3 +64,11 @@ bootJar {
     archiveVersion = "0.0.1"
 
 }*/
+targetCompatibility = JavaVersion.VERSION_1_9
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    enabled = false
+}
